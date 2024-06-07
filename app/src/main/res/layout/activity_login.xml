@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="22dp">
+
+    <!-- Login Title -->
+    <TextView
+        android:id="@+id/tv_login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="76dp"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Welcome Back Message -->
+    <TextView
+        android:id="@+id/tv_welcome_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back"
+        android:textSize="29sp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/tv_login_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Sign in Message -->
+    <TextView
+        android:id="@+id/tv_sign_in_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign in with your Email and Password or Continue with the Social Media"
+        android:textSize="15sp"
+        android:layout_marginLeft="74dp"
+        android:textColor="#745959"
+        android:layout_below="@id/tv_welcome_back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Username EditText -->
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tv_sign_in_message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        android:background="@drawable/edittext_bg"
+        android:hint="Email or Phone Number"
+        android:inputType="text"
+        android:padding="12dp" />
+
+    <!-- Password EditText -->
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/et_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_bg"
+        android:hint="Password"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:inputType="textPassword"
+        android:padding="12dp" />
+
+    <!-- Forgot Password TextView -->
+    <TextView
+        android:id="@+id/tv_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="38dp"
+        android:clickable="true"
+        android:minHeight="48dp"
+        android:text="Forgot Password?"
+         android:textColor="#C1ACAC"
+        android:textSize="14sp" />
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="303dp"
+        android:layout_height="59dp"
+        android:text="Login"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/button_bg"
+        android:padding="12dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_forgot_password" />
+
+    <TextView
+        android:id="@+id/orlogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or Login with"
+        android:textColor="#C1ACAC"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="145dp"
+        android:layout_below="@id/btn_login"
+        android:layout_marginTop="82dp"/>
+    <ImageView
+        android:id="@+id/gmail"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:src="@drawable/gmail"
+        android:layout_marginLeft="193dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/orlogin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Don’t have an account yet ? Create One"
+        android:layout_below="@id/gmail"
+        android:layout_marginLeft="104dp"/>
+
+
+</RelativeLayout>
