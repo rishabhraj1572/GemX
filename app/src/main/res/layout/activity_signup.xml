@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <!-- Login Title -->
+    <!-- signup Title -->
     <TextView
         android:id="@+id/tv_login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Sign Up"
         android:layout_marginTop="40dp"
         android:textSize="28sp"
         android:textColor="@android:color/black"
@@ -18,12 +18,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="13dp" />
 
-    <!-- Welcome Back Message -->
+    <!-- Register -->
     <TextView
         android:id="@+id/tv_welcome_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Back"
+        android:text="Register Account"
         android:textSize="29sp"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
@@ -37,7 +37,7 @@
         android:id="@+id/tv_sign_in_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_page_info"
+        android:text="@string/signup_page_title"
         android:textSize="15sp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
@@ -56,7 +56,7 @@
         android:layout_marginBottom="1dp"
         android:gravity="center"
         android:background="@drawable/edittext_bg"
-        android:hint="Email or Phone Number"
+        android:hint="Enter Your Name"
         android:inputType="text"
         android:layout_marginTop="50dp" />
 
@@ -68,59 +68,37 @@
         android:layout_below="@id/et_username"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Password"
+        android:hint="Phone Number"
         android:gravity="center"
         android:layout_marginTop="30dp"
         android:inputType="textPassword" />
 
-    <!-- Rem Forgor Pass -->
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="300dp"
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="281dp"
         android:layout_height="48dp"
         android:layout_below="@id/et_password"
-        android:layout_marginTop="35dp"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true">
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="start|center"
-            android:layout_weight="1"
-            android:text="Remember Me"
-            android:textColor="#737373"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="Forgot Password?"
-            android:textColor="#737373"
-            android:textSize="14sp" />
-
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edittext_bg"
+        android:hint="Enter E-mail Id"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:inputType="textPassword" />
 
     <!-- Login Btn -->
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="303dp"
+        android:layout_width="150dp"
         android:layout_height="59dp"
-        android:layout_below="@id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_marginTop="25dp"
+        android:layout_below="@id/et_email"
+        android:layout_marginTop="35dp"
         android:background="@drawable/button_bg"
         android:padding="12dp"
-        android:text="Login"
+        android:text="Send OTP"
         android:textSize="18sp"
         android:textColor="@color/black"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:layout_centerHorizontal="true"/>
 
 
     <TextView
@@ -131,7 +109,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="145dp"
         android:textColor="@color/static_color"
-        android:text="Or Login with" />
+        android:text="Or Signup with" />
 
     <ImageView
         android:id="@+id/gmail"
@@ -164,16 +142,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/static_color"
-                android:text="Don’t have an account yet ?"
+                android:text="Already have an account ?"
                 android:gravity="center_vertical"
                 android:paddingEnd="4dp" />
 
             <TextView
-                android:id="@+id/create"
+                android:id="@+id/signin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="Create One"
+                android:text="Sign In"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textAlignment="viewStart"
