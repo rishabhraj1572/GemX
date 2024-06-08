@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gemx.gemx.Watchers.OtpTextWatcher;
 
+
 public class OTPActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
