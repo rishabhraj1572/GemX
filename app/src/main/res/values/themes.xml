@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.GemX" parent="Base.Theme.GemX" />
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/progress_color</item>
+    </style>
 </resources>

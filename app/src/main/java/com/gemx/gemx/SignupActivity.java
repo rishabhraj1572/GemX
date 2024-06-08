@@ -2,6 +2,7 @@ package com.gemx.gemx;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,10 +17,17 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         TextView signinBtn = findViewById(R.id.signin);
+        Button sendOTP = findViewById(R.id.send_btn);
+
         signinBtn.setOnClickListener(v->{
             Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
             finishAffinity();
+        });
+
+        sendOTP.setOnClickListener(v->{
+            Intent i = new Intent(this,OTPActivity.class);
+            startActivity(i);
         });
     }
 }

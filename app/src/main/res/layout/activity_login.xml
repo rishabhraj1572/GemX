@@ -91,6 +91,7 @@
             android:layout_weight="1"
             android:text="Remember Me"
             android:textColor="#737373"
+            android:buttonTint="@color/static_color"
             android:textSize="14sp" />
 
         <TextView

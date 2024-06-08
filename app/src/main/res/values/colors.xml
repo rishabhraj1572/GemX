@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gold">#FFEB3B</color>
     <color name="static_color">#745959</color>
+    <color name="progress_color">#6F4C4C</color>
 </resources>

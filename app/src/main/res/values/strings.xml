@@ -2,4 +2,6 @@
     <string name="app_name">GemX</string>
     <string name="welcome_page_info">Sign in with your Email and Password or Continue with the Social Media</string>
     <string name="signup_page_title">Complete your Details or Continue with the Social Media</string>
+    <string name="otp_title">Please verify the one-time Password (OTP) sent to your registered mobile number below</string>
+    <string name="resend"><u>Resend</u></string>
 </resources>
