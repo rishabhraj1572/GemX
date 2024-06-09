@@ -54,9 +54,7 @@ public class OTPActivity extends AppCompatActivity {
             }
         });
 
-        cancelBtn.setOnClickListener(v->{
-            finish();
-        });
+        cancelBtn.setOnClickListener(v-> finish());
 
         signinBtn.setOnClickListener(v->{
             Intent i = new Intent(this,LoginActivity.class);

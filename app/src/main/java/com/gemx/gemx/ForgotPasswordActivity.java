@@ -10,27 +10,21 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignupActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_forgot);
 
         TextView signinBtn = findViewById(R.id.signin);
-        Button sendOTP = findViewById(R.id.send_btn);
+        TextView back_to_login = findViewById(R.id.back_to_login);
         ImageView backBtn = findViewById(R.id.back);
+        Button sendOTP = findViewById(R.id.send_btn);
 
-        backBtn.setOnClickListener(v-> finish());
-
-        signinBtn.setOnClickListener(v->{
-           onBackPressed();
-        });
-
-        sendOTP.setOnClickListener(v->{
-            Intent i = new Intent(this,OTPActivity.class);
-            startActivity(i);
-        });
+        backBtn.setOnClickListener(v-> onBackPressed());
+        back_to_login.setOnClickListener(v->onBackPressed());
+        signinBtn.setOnClickListener(v-> onBackPressed());
     }
 
     @Override

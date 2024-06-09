@@ -17,12 +17,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         TextView createBtn = findViewById(R.id.create);
+        TextView forgotBtn = findViewById(R.id.tv_forgot_password);
         ImageView backBtn = findViewById(R.id.back);
 
         backBtn.setOnClickListener(v-> finish());
 
         createBtn.setOnClickListener(v->{
             Intent i = new Intent(this,SignupActivity.class);
+            startActivity(i);
+        });
+
+        forgotBtn.setOnClickListener(v->{
+            Intent i = new Intent(this,ForgotPasswordActivity.class);
             startActivity(i);
         });
     }
