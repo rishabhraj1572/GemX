@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gold">#FFEB3B</color>
-    <color name="static_color">#745959</color>
+    <color name="static_color">#715858</color>
     <color name="progress_color">#6F4C4C</color>
+    <color name="background">#1E1E1E</color>
 </resources>
