@@ -6,12 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp">
 
-    <!-- Login Title -->
+    <!-- signup Title -->
     <TextView
         android:id="@+id/tv_login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="Verification"
+        android:gravity="center"
+        android:textAlignment="center"
         android:layout_marginTop="40dp"
         android:textSize="28sp"
         android:textColor="@android:color/black"
@@ -19,44 +21,30 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="13dp" />
 
-    <!-- Welcome Back Message -->
+    <!-- Register -->
     <TextView
         android:id="@+id/tv_welcome_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verify with OTP"
+        android:text="Enter your Verification Code"
         android:textAlignment="center"
         android:textSize="29sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="120dp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:layout_below="@id/tv_login_title"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp" />
 
-    <!-- Sign in Message -->
-    <TextView
-        android:id="@+id/tv_sign_in_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/otp_title"
-        android:textSize="15sp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:gravity="center"
-        android:textColor="@color/static_color"
-        android:layout_below="@id/tv_welcome_back"
-        android:layout_centerHorizontal="true" />
 
 
     <LinearLayout
-        android:id="@+id/otp"
+        android:id="@+id/et_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/tv_sign_in_message"
+        android:layout_below="@id/tv_welcome_back"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="1dp"
         android:layout_marginTop="25dp"
         android:gravity="center">
 
@@ -116,12 +104,14 @@
     </LinearLayout>
 
 
+
+    <!-- Password EditText -->
     <LinearLayout
-        android:id="@+id/ll"
+        android:id="@+id/back_to_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/otp"
-        android:layout_marginTop="35dp"
+        android:layout_below="@id/et_username"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true">
 
@@ -135,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/static_color"
-                android:text="Didn't received the OTP ?"
+                android:text="Didn't received the Code ?"
                 android:gravity="center_vertical"
                 android:paddingEnd="4dp" />
 
@@ -154,34 +144,22 @@
 
     </LinearLayout>
 
-
+    <!-- Login Btn -->
     <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="303dp"
+        android:id="@+id/send_btn"
+        android:layout_width="150dp"
         android:layout_height="59dp"
-        android:layout_below="@id/ll"
-        android:layout_marginTop="90dp"
+        android:layout_below="@id/back_to_login"
+        android:layout_alignStart="@+id/et_username"
+        android:layout_alignEnd="@+id/et_username"
+        android:layout_marginTop="25dp"
         android:background="@drawable/button_bg"
         android:padding="12dp"
-        android:text="Submit"
+        android:text="Verify"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_centerHorizontal="true"/>
+        android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="303dp"
-        android:layout_height="59dp"
-        android:layout_below="@id/btn_submit"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/cancel_btn"
-        android:padding="12dp"
-        android:text="Cancel"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/orlogin"
@@ -191,7 +169,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="145dp"
         android:textColor="@color/static_color"
-        android:text="Or Signup with" />
+        android:text="Or Login with" />
 
     <ImageView
         android:id="@+id/gmail"
@@ -255,4 +233,5 @@
         android:layout_marginBottom="0dp"
         android:padding="8dp"
         app:srcCompat="@drawable/back" />
+
 </RelativeLayout>
