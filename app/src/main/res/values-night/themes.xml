@@ -3,11 +3,16 @@
     <style name="Base.Theme.GemX" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:textViewStyle">@style/CustomFontTextView</item>
     </style>
 
     <style name="Theme.GemX" parent="Base.Theme.GemX" />
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/progress_color</item>
+    </style>
+
+    <style name="CustomFontTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/arial</item>
     </style>
 </resources>
