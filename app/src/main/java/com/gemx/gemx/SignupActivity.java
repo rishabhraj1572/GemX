@@ -3,6 +3,7 @@ package com.gemx.gemx;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +19,9 @@ public class SignupActivity extends AppCompatActivity {
 
         TextView signinBtn = findViewById(R.id.signin);
         Button sendOTP = findViewById(R.id.send_btn);
+        ImageView backBtn = findViewById(R.id.back);
+
+        backBtn.setOnClickListener(v-> finish());
 
         signinBtn.setOnClickListener(v->{
             Intent i = new Intent(this,LoginActivity.class);
@@ -29,5 +33,11 @@ public class SignupActivity extends AppCompatActivity {
             Intent i = new Intent(this,OTPActivity.class);
             startActivity(i);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

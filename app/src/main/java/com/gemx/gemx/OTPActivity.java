@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ public class OTPActivity extends AppCompatActivity {
         EditText otp2 = findViewById(R.id.otp_2);
         EditText otp3 = findViewById(R.id.otp_3);
         EditText otp4 = findViewById(R.id.otp_4);
+        ImageView backBtn = findViewById(R.id.back);
+
+        backBtn.setOnClickListener(v-> finish());
 
         otpHandle(otp1,otp2,otp3,otp4);
         submitBtn.setOnClickListener(v -> {
