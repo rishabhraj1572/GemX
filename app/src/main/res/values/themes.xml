@@ -18,7 +18,5 @@
         <item name="android:fontFamily">@font/arial</item>
     </style>
 
-    <style name="CustomButton" parent="android:Widget.Button">
-        <item name="android:background">@drawable/selector_button</item>
-    </style>
+
 </resources>

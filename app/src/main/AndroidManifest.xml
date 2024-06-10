@@ -40,6 +40,9 @@
             android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
