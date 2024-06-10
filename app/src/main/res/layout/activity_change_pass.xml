@@ -98,7 +98,7 @@
         android:layout_alignStart="@+id/et_username1"
         android:layout_alignEnd="@+id/et_username1"
         android:layout_marginTop="35dp"
-        android:background="@drawable/button_bg"
+        android:background="@drawable/selector_button"
         android:padding="12dp"
         android:text="Submit"
         android:textAllCaps="false"
