@@ -6,4 +6,7 @@
     <color name="static_color">#715858</color>
     <color name="progress_color">#6F4C4C</color>
     <color name="background">#1E1E1E</color>
+    <color name="hint">#B89C9C</color>
+    <color name="short_title">#C8AAAA</color>
+    <color name="bottom">#C1ACAC</color>
 </resources>

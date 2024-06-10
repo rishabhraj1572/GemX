@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:textSize="28sp"
         android:textColor="@android:color/white"
         android:layout_alignParentTop="true"
@@ -46,7 +46,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:gravity="center"
-        android:textColor="@color/static_color"
+        android:textColor="@color/bottom"
         android:layout_below="@id/tv_welcome_back"
         android:layout_centerHorizontal="true" />
 
@@ -62,6 +62,9 @@
         android:background="@drawable/edittext_bg"
         android:hint="Email or Phone Number"
         android:inputType="text"
+        android:textColorHint="@color/hint"
+        android:textColor="@color/white"
+        android:padding="10dp"
         android:layout_marginTop="50dp" />
 
     <!-- Password EditText -->
@@ -75,6 +78,9 @@
         android:hint="Password"
         android:gravity="center"
         android:layout_marginTop="30dp"
+        android:textColorHint="@color/hint"
+        android:textColor="@color/white"
+        android:padding="10dp"
         android:inputType="textPassword" />
 
     <!-- Rem Forgor Pass -->
@@ -94,8 +100,8 @@
             android:layout_gravity="start|center"
             android:layout_weight="1"
             android:text="Remember Me"
-            android:textColor="@color/static_color"
-            android:buttonTint="@color/static_color"
+            android:textColor="@color/bottom"
+            android:buttonTint="@color/hint"
             android:textSize="14sp" />
 
         <TextView
@@ -106,7 +112,7 @@
             android:clickable="true"
             android:gravity="center"
             android:text="Forgot Password?"
-            android:textColor="@color/static_color"
+            android:textColor="@color/bottom"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -135,7 +141,7 @@
         android:layout_above="@+id/gmail"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="145dp"
-        android:textColor="@color/static_color"
+        android:textColor="@color/bottom"
         android:text="Or Login with" />
 
     <ImageView
@@ -168,7 +174,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/static_color"
+                android:textColor="@color/bottom"
                 android:text="Don’t have an account yet ?"
                 android:gravity="center_vertical"
                 android:paddingEnd="4dp" />
@@ -196,10 +202,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="0dp"
         android:padding="8dp"
-        android:tint="@color/white"
-        app:srcCompat="@drawable/back" />
+        app:srcCompat="@drawable/back"
+        app:tint="@color/white" />
 
 </RelativeLayout>

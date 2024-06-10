@@ -4,6 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.gemx.gemx.R;
+
 public class OtpTextWatcher implements TextWatcher {
     private final EditText currentEditText;
     private final EditText nextEditText;
@@ -31,6 +33,11 @@ public class OtpTextWatcher implements TextWatcher {
             nextEditText.requestFocus();
         } else if (s.length() == 0 && prevEditText != null) {
             prevEditText.requestFocus();
+        }
+        if (s.toString().isEmpty()) {
+            currentEditText.setBackgroundResource(R.drawable.otp_bg_without_border);
+        } else {
+            currentEditText.setBackgroundResource(R.drawable.otp_bg_with_border);
         }
     }
 }

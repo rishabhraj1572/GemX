@@ -23,7 +23,7 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_verification);
 
         Button verifyBtn = findViewById(R.id.send_btn);

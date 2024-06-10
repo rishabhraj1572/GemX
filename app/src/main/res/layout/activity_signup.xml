@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Up"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:textSize="28sp"
         android:textColor="@android:color/white"
         android:layout_alignParentTop="true"
@@ -46,7 +46,7 @@
         android:textAlignment="center"
         android:layout_marginEnd="25dp"
         android:gravity="center"
-        android:textColor="@color/static_color"
+        android:textColor="@color/bottom"
         android:layout_below="@id/tv_welcome_back"
         android:layout_centerHorizontal="true" />
 
@@ -61,8 +61,11 @@
         android:gravity="center"
         android:background="@drawable/edittext_bg"
         android:hint="Enter Your Name"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hint"
         android:inputType="text"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:padding="10dp"/>
 
     <!-- Password EditText -->
     <EditText
@@ -74,8 +77,11 @@
         android:background="@drawable/edittext_bg"
         android:hint="Phone Number"
         android:gravity="center"
+        android:textColorHint="@color/hint"
+        android:textColor="@color/white"
         android:layout_marginTop="30dp"
-        android:inputType="number" />
+        android:inputType="number"
+        android:padding="10dp"/>
 
     <EditText
         android:id="@+id/et_email"
@@ -86,8 +92,11 @@
         android:background="@drawable/edittext_bg"
         android:hint="Enter E-mail Id"
         android:gravity="center"
+        android:textColorHint="@color/hint"
+        android:textColor="@color/white"
         android:layout_marginTop="30dp"
-        android:inputType="text" />
+        android:inputType="text"
+        android:padding="10dp"/>
 
     <!-- Login Btn -->
     <Button
@@ -100,7 +109,7 @@
         android:padding="12dp"
         android:text="Send OTP"
         android:textSize="18sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:layout_centerHorizontal="true"/>
 
@@ -112,7 +121,7 @@
         android:layout_above="@+id/gmail"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="145dp"
-        android:textColor="@color/static_color"
+        android:textColor="@color/bottom"
         android:text="Or Signup with" />
 
     <ImageView
@@ -120,9 +129,12 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_above="@+id/lastText"
-        android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
         android:layout_marginLeft="193dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/gmailnew" />
 
     <!-- Bottom Line -->
@@ -145,7 +157,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/static_color"
+                android:textColor="@color/bottom"
                 android:text="Already have an account ?"
                 android:gravity="center_vertical"
                 android:paddingEnd="4dp" />
@@ -173,7 +185,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="0dp"
         android:padding="8dp"
         app:srcCompat="@drawable/back"
