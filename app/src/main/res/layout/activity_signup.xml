@@ -105,7 +105,7 @@
         android:layout_height="59dp"
         android:layout_below="@id/et_email"
         android:layout_marginTop="35dp"
-        android:background="@drawable/button_bg"
+        android:background="@drawable/selector_button"
         android:padding="12dp"
         android:text="Send OTP"
         android:textSize="18sp"

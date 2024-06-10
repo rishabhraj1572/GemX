@@ -2,14 +2,12 @@ package com.gemx.gemx;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    Button loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +18,6 @@ public class LoginActivity extends AppCompatActivity {
         TextView createBtn = findViewById(R.id.create);
         TextView forgotBtn = findViewById(R.id.tv_forgot_password);
         ImageView backBtn = findViewById(R.id.back);
-        loginBtn = findViewById(R.id.btn_login);
-
 
         backBtn.setOnClickListener(v-> finish());
 
@@ -34,10 +30,5 @@ public class LoginActivity extends AppCompatActivity {
             Intent i = new Intent(this,ForgotPasswordActivity.class);
             startActivity(i);
         });
-        loginBtn.setOnClickListener(v->{
-            Intent i = new Intent(this,StartConversationActivity.class);
-            startActivity(i);
-        });
-
     }
 }
