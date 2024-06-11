@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "5170341751",
+    "project_id": "gemx-cb59c",
+    "storage_bucket": "gemx-cb59c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5170341751:android:4ea3d980ac084393e92372",
+        "android_client_info": {
+          "package_name": "com.gemx.gemx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSoKYq5A3qO9FuOCuPGpMK6THkr-ZD5_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
