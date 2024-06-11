@@ -5,9 +5,11 @@
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
-    app:cardBackgroundColor="#E0121714"
+    app:cardBackgroundColor="@drawable/h2_item_selector"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
     >
 
 
@@ -28,7 +30,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mic" />
+            app:srcCompat="@drawable/mic"
+            app:tint="@drawable/black_white"/>
 
         <TextView
             android:id="@+id/textView5"
@@ -37,7 +40,7 @@
             android:layout_marginStart="14dp"
             android:textSize="18sp"
             android:gravity="center"
-            android:textColor="@color/bottom"
+            android:textColor="@drawable/h2_item_text"
             android:text="Statements or Titles"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -50,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/three_dot_h"
-            app:tint="@color/white"
+            app:tint="@drawable/black_white"
             android:scaleType="fitXY"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
