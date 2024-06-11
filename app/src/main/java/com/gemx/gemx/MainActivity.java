@@ -2,10 +2,10 @@ package com.gemx.gemx;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+    //edfetoge
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
