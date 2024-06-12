@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.gemx.gemx"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -42,4 +42,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation ("com.airbnb.android:lottie:3.4.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-auth")
 }

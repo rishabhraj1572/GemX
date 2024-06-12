@@ -69,28 +69,13 @@
 
     <!-- Password EditText -->
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/et_phone_email"
         android:layout_width="281dp"
         android:layout_height="48dp"
         android:layout_below="@id/et_username"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Phone Number"
-        android:gravity="center"
-        android:textColorHint="@color/hint"
-        android:textColor="@color/white"
-        android:layout_marginTop="30dp"
-        android:inputType="number"
-        android:padding="10dp"/>
-
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="281dp"
-        android:layout_height="48dp"
-        android:layout_below="@id/et_password"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/edittext_bg"
-        android:hint="Enter E-mail Id"
+        android:hint="Email or Number with Code"
         android:gravity="center"
         android:textColorHint="@color/hint"
         android:textColor="@color/white"
@@ -98,20 +83,37 @@
         android:inputType="text"
         android:padding="10dp"/>
 
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="281dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/et_phone_email"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edittext_bg"
+        android:hint="Enter Password"
+        android:gravity="center"
+        android:textColorHint="@color/hint"
+        android:textColor="@color/white"
+        android:layout_marginTop="30dp"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        android:padding="10dp"/>
+
     <!-- Login Btn -->
     <Button
         android:id="@+id/send_btn"
         android:layout_width="150dp"
         android:layout_height="59dp"
-        android:layout_below="@id/et_email"
+        android:layout_below="@id/et_password"
+        android:layout_alignStart="@+id/et_phone_email"
+        android:layout_alignEnd="@+id/et_phone_email"
         android:layout_marginTop="35dp"
         android:background="@drawable/button_bg"
         android:padding="12dp"
         android:text="Send OTP"
-        android:textSize="18sp"
-        android:textColor="@color/white"
         android:textAllCaps="false"
-        android:layout_centerHorizontal="true"/>
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 
     <TextView

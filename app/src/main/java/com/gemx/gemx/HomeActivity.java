@@ -37,12 +37,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        talkWithGemx.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, TalkActivity.class);
-                startActivity(intent);
-            }
+        talkWithGemx.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, TalkActivity.class);
+            startActivity(intent);
         });
 
         recyclerView = findViewById(R.id.recyclerView);
