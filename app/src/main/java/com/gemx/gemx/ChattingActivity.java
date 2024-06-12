@@ -18,26 +18,21 @@ public class ChattingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chatting);
-        ImageView backBtn = findViewById(R.id.back);
         TextView gradientTextView = findViewById(R.id.anything);
-
         Shader textShader = new LinearGradient(0, 0, 0, gradientTextView.getTextSize(),
                 new int[]{
                         Color.parseColor("#3A59C7"),
                         Color.parseColor("#FFFFFF")
                 }, null, Shader.TileMode.CLAMP);
-
         gradientTextView.getPaint().setShader(textShader);
         gradientTextView.invalidate();
 
 
+        ImageView backBtn = findViewById(R.id.back);
+
         backBtn.setOnClickListener(v-> finish());
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
     }
 }
