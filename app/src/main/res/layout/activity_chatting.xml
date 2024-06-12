@@ -8,93 +8,92 @@
     android:background="@color/background"
     tools:context=".ChattingActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginStart="1dp"
+            android:layout_gravity="start"
+            app:srcCompat="@drawable/back"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:layout_gravity="center"
+            android:paddingTop="3.5dp"
+            android:text="Chatting with GemX"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/myprofile"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewhello"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:text="Hello,\nAsk me "
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/anything"
+        android:layout_width="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Anything...."
+        android:textStyle="bold"
+        android:textColor="@color/material_dynamic_neutral0"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewhello"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewhello" />
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toBottomOf="@+id/textViewhello">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <ImageView
-                    android:id="@+id/back"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="10dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_gravity="start"
-                    app:srcCompat="@drawable/back"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="1dp"
-                    android:layout_gravity="center"
-                    android:paddingTop="3.5dp"
-                    android:text="Chatting with GemX"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/myprofile"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textViewhello"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="20dp"
-                android:text="Hello,\nAsk me "
-                android:textColor="@color/white"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/buttonContainer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
-
-            <TextView
-                android:id="@+id/anything"
-                android:layout_width="0dp"
-                android:layout_marginStart="5dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
-                android:text="Anything...."
-                android:textStyle="bold"
-                android:textColor="@color/material_dynamic_neutral0"
-                android:textSize="36dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewhello"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewhello" />
 
             <LinearLayout
                 android:id="@+id/buttonContainer"
@@ -103,18 +102,18 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="19dp"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewhello">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:gravity="center_vertical|start"
-                    android:background="@drawable/chatsuggestions_bg"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/chatsuggestions_bg"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="\u25CF   Explain quantum computing"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -123,12 +122,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:gravity="center_vertical|start"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/chatsuggestions_bg"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="\u25CF   How do I make an HTTP in Javascript ?"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -137,12 +136,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:gravity="center_vertical|start"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/chatsuggestions_bg"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="\u25CF   How can I start freelancing for free?"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -151,12 +150,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:gravity="center_vertical|start"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/chatsuggestions_bg"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="\u25CF   E-commerce webdesign"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -165,12 +164,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:gravity="center_vertical|start"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/chatsuggestions_bg"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="\u25CF   Explain quantum computing"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
