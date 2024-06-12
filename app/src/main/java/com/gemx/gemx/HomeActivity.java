@@ -3,6 +3,7 @@ package com.gemx.gemx;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +26,21 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_h2);
+        setContentView(R.layout.activity_home);
         ConstraintLayout chatWithGemx = findViewById(R.id.chatwithGemx);
+        ImageView talkWithGemx = findViewById(R.id.talkWithGemX);
         chatWithGemx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start ChattingActivity
                 Intent intent = new Intent(HomeActivity.this, ChattingActivity.class);
+                startActivity(intent);
+            }
+        });
+        talkWithGemx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, TalkActivity.class);
                 startActivity(intent);
             }
         });

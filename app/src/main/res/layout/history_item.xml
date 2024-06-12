@@ -24,13 +24,13 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginTop="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mic"
+            app:srcCompat="@drawable/mic_icon"
             app:tint="@drawable/black_white"/>
 
         <TextView

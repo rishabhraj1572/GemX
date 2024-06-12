@@ -16,6 +16,9 @@
         android:theme="@style/Theme.GemX"
         tools:targetApi="31">
         <activity
+            android:name=".TalkActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ChattingActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
