@@ -94,37 +94,37 @@ public class SignupActivity extends AppCompatActivity {
             if(isValidEmail(id) && pass.length() < 8){
                 Toast.makeText(this, "Atleast 8 characters are required for Password", Toast.LENGTH_SHORT).show();
                 return;
-            }{
-                if (isValidEmail(id)) {
+            }
 
-                    progressDialog.setTitle("Please Wait");
-                    progressDialog.setMessage("Creating your Account");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+            if (isValidEmail(id)) {
 
-                    mAuth.createUserWithEmailAndPassword(id, pass)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                                    // Log in the user
-                                    mAuth.signInWithEmailAndPassword(id, pass)
-                                            .addOnCompleteListener(loginTask -> {
-                                                if (loginTask.isSuccessful()) {
-                                                    // Login success,
-                                                    Intent intent = new Intent(this, StartConversationActivity.class);
-                                                    startActivity(intent);
-                                                    finish(); // Close the signup activity
-                                                } else {
-                                                    // Login failed, show error message
-                                                    Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                } else {
-                                    // Registration failed
-                                    Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
+                progressDialog.setTitle("Please Wait");
+                progressDialog.setMessage("Creating your Account");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                mAuth.createUserWithEmailAndPassword(id, pass)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                                // Log in the user
+                                mAuth.signInWithEmailAndPassword(id, pass)
+                                        .addOnCompleteListener(loginTask -> {
+                                            if (loginTask.isSuccessful()) {
+                                                // Login success,
+                                                Intent intent = new Intent(this, StartConversationActivity.class);
+                                                startActivity(intent);
+                                                finish(); // Close the signup activity
+                                            } else {
+                                                // Login failed, show error message
+                                                Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                // Registration failed
+                                Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
 
             if (isValidPhoneNumber(id)) {
@@ -137,17 +137,15 @@ public class SignupActivity extends AppCompatActivity {
                 PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(id)              // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout duration
-                        .setActivity(this)               // Activity (for callback binding)
+                        .setActivity(this)
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(PhoneAuthCredential credential) {
-                                // Handle the verification completed event
                                 progressDialog.dismiss();
                             }
 
                             @Override
                             public void onVerificationFailed(FirebaseException e) {
-                                // Handle the verification failed event
                                 progressDialog.dismiss();
                                 Toast.makeText(SignupActivity.this, "Sending OTP Failed!", Toast.LENGTH_SHORT).show();
                             }
