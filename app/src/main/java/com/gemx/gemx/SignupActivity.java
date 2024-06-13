@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_signup);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
@@ -92,10 +92,31 @@ public class SignupActivity extends AppCompatActivity {
             if(isValidEmail(id) && pass.length() < 8){
                 Toast.makeText(this, "Atleast 8 characters are required for Password", Toast.LENGTH_SHORT).show();
                 return;
-            }else{
-
-                //do email work
-//                return;
+            }{
+                if (isValidEmail(id)) {
+                    mAuth.createUserWithEmailAndPassword(id, pass)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                                    // Log in the user
+                                    mAuth.signInWithEmailAndPassword(id, pass)
+                                            .addOnCompleteListener(loginTask -> {
+                                                if (loginTask.isSuccessful()) {
+                                                    // Login success,
+                                                    Intent intent = new Intent(this, StartConversationActivity.class);
+                                                    startActivity(intent);
+                                                    finish(); // Close the signup activity
+                                                } else {
+                                                    // Login failed, show error message
+                                                    Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                } else {
+                                    // Registration failed
+                                    Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
             }
 
             if (isValidPhoneNumber(id)) {
