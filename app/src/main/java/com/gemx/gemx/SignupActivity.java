@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,8 @@ public class SignupActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v-> finish());
 
         signinBtn.setOnClickListener(v-> onBackPressed());
+
+        progressDialog = new ProgressDialog(SignupActivity.this, R.style.MyAlertDialogStyle);
 
         EditText userName = findViewById(R.id.et_username);
         EditText userId = findViewById(R.id.et_phone_email);
@@ -94,6 +96,12 @@ public class SignupActivity extends AppCompatActivity {
                 return;
             }{
                 if (isValidEmail(id)) {
+
+                    progressDialog.setTitle("Please Wait");
+                    progressDialog.setMessage("Creating your Account");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
                     mAuth.createUserWithEmailAndPassword(id, pass)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
@@ -120,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             if (isValidPhoneNumber(id)) {
-                ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.MyAlertDialogStyle);
+
                 progressDialog.setTitle("Please Wait");
                 progressDialog.setMessage("Sending OTP to your Registered Phone Number");
                 progressDialog.setCancelable(false);
