@@ -63,9 +63,9 @@
 
         <EditText
             android:id="@+id/otp_1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@drawable/otp_bg"
@@ -80,9 +80,9 @@
 
         <EditText
             android:id="@+id/otp_2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@drawable/otp_bg"
@@ -97,9 +97,9 @@
 
         <EditText
             android:id="@+id/otp_3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@drawable/otp_bg"
@@ -114,9 +114,42 @@
 
         <EditText
             android:id="@+id/otp_4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/otp_bg"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:cursorVisible="false"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <EditText
+            android:id="@+id/otp_5"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/otp_bg"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:cursorVisible="false"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <EditText
+            android:id="@+id/otp_6"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@drawable/otp_bg"

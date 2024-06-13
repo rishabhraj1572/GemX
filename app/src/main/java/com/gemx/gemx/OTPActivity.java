@@ -11,21 +11,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gemx.gemx.Watchers.OtpTextWatcher;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.concurrent.TimeUnit;
 
 public class OTPActivity extends AppCompatActivity {
 
-    ProgressDialog progressDialog;
+    private FirebaseAuth mAuth;
+    private String verificationId;
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_otp);
+
+        mAuth = FirebaseAuth.getInstance();
+        verificationId = getIntent().getStringExtra("verificationId");
 
         TextView signinBtn = findViewById(R.id.signin);
         TextView resendBtn = findViewById(R.id.resend);
@@ -35,39 +47,49 @@ public class OTPActivity extends AppCompatActivity {
         EditText otp2 = findViewById(R.id.otp_2);
         EditText otp3 = findViewById(R.id.otp_3);
         EditText otp4 = findViewById(R.id.otp_4);
+        EditText otp5 = findViewById(R.id.otp_5);
+        EditText otp6 = findViewById(R.id.otp_6);
         ImageView backBtn = findViewById(R.id.back);
 
-        backBtn.setOnClickListener(v-> finish());
+        backBtn.setOnClickListener(v -> finish());
 
-        otpHandle(otp1,otp2,otp3,otp4);
+        progressDialog = new ProgressDialog(this, R.style.MyAlertDialogStyle);
+
+        otpHandle(otp1, otp2, otp3, otp4,otp5,otp6);
         submitBtn.setOnClickListener(v -> {
             try {
-                int otp1Value = Integer.parseInt(otp1.getText().toString());
-                int otp2Value = Integer.parseInt(otp2.getText().toString());
-                int otp3Value = Integer.parseInt(otp3.getText().toString());
-                int otp4Value = Integer.parseInt(otp4.getText().toString());
-
-                String otp = String.valueOf(otp1Value) + otp2Value + otp3Value + otp4Value;
-                Toast.makeText(this, "OTP is : " + otp, Toast.LENGTH_SHORT).show();
+                progressDialog.setTitle("Please Wait");
+                progressDialog.setMessage("Verifying OTP");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                String otp = otp1.getText().toString() + otp2.getText().toString() + otp3.getText().toString() + otp4.getText().toString()+ otp5.getText().toString() + otp6.getText().toString();
+                if (otp.length() == 6) {
+                    verifyCode(otp);
+                } else {
+                    Toast.makeText(this, "Please enter a valid 6-digit OTP", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         });
 
-        cancelBtn.setOnClickListener(v-> finish());
+        cancelBtn.setOnClickListener(v -> finish());
 
-        signinBtn.setOnClickListener(v->{
-            Intent i = new Intent(this,LoginActivity.class);
+        signinBtn.setOnClickListener(v -> {
+            Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finishAffinity();
         });
 
-        resendBtn.setOnClickListener(v->{
-            progressDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle);
+        resendBtn.setOnClickListener(v -> {
+
             progressDialog.setTitle("Please Wait");
             progressDialog.setMessage("Sending OTP to your Registered Phone Number");
             progressDialog.setCancelable(false);
             progressDialog.show();
+
+//            resendVerificationCode(); // Resend the OTP
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -75,16 +97,70 @@ public class OTPActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             }, 3000); // 3 seconds delay
-
         });
-
     }
 
-    private void otpHandle(EditText otp1, EditText otp2, EditText otp3, EditText otp4) {
+    private void verifyCode(String code) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        signInWithCredential(credential);
+    }
+
+    private void signInWithCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Intent intent = new Intent(OTPActivity.this, StartConversationActivity.class);
+                        startActivity(intent);
+                        progressDialog.dismiss();
+                        finishAffinity();
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            Toast.makeText(OTPActivity.this, "Invalid OTP. Please try again.", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+    private void resendVerificationCode() {
+        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout duration
+                .setActivity(this) // Activity (for callback binding)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                        // Auto-retrieval or instant verification succeeded
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        // Verification failed
+                        Toast.makeText(OTPActivity.this, "Verification failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(String newVerificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        // Code sent, update verification ID
+                        verificationId = newVerificationId;
+                        Toast.makeText(OTPActivity.this, "OTP Resent.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private void otpHandle(EditText otp1, EditText otp2, EditText otp3, EditText otp4, EditText otp5, EditText otp6) {
         otp1.addTextChangedListener(new OtpTextWatcher(otp1, otp2, null));
         otp2.addTextChangedListener(new OtpTextWatcher(otp2, otp3, otp1));
         otp3.addTextChangedListener(new OtpTextWatcher(otp3, otp4, otp2));
-        otp4.addTextChangedListener(new OtpTextWatcher(otp4, null, otp3));
+        otp4.addTextChangedListener(new OtpTextWatcher(otp4, otp5, otp3));
+        otp5.addTextChangedListener(new OtpTextWatcher(otp5, otp6, otp4));
+        otp6.addTextChangedListener(new OtpTextWatcher(otp6, null, otp5));
 
         otp1.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN && otp1.getText().length() == 0) {
@@ -121,6 +197,25 @@ public class OTPActivity extends AppCompatActivity {
                 if (otp4.getSelectionStart() == 0) {
                     otp4.clearFocus();
                     otp3.requestFocus();
+                }
+            }
+            return false;
+        });
+        otp5.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN && otp5.getText().length() == 0) {
+                if (otp5.getSelectionStart() == 0) {
+                    otp5.clearFocus();
+                    otp4.requestFocus();
+                }
+            }
+            return false;
+        });
+
+        otp6.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN && otp6.getText().length() == 0) {
+                if (otp6.getSelectionStart() == 0) {
+                    otp6.clearFocus();
+                    otp5.requestFocus();
                 }
             }
             return false;
