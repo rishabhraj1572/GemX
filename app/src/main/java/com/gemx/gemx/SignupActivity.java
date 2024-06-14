@@ -38,7 +38,6 @@ public class SignupActivity extends AppCompatActivity {
 //        EdgeToEdge.enable(this);
 
         setContentView(R.layout.activity_signup);
-        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         TextView signinBtn = findViewById(R.id.signin);

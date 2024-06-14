@@ -3,6 +3,7 @@ package com.gemx.gemx;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(LoginActivity.this, R.style.MyAlertDialogStyle);
@@ -56,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
 
             if (!isValidEmail(email)) {
                 Toast.makeText(this, "Enter a valid email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(TextUtils.isEmpty(password)){
+                Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show();
                 return;
             }
 
