@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gemx.gemx.R;
-import com.gemx.gemx.RecyclerItems.ChatHistoryItems;
-import com.gemx.gemx.RecyclerItems.ChatItems;
 
 import java.util.List;
 

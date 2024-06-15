@@ -107,6 +107,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
+                    android:id="@+id/suggestion1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -121,6 +122,7 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/suggestion2"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -135,6 +137,7 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/suggestion3"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -149,6 +152,7 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/suggestion4"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -163,6 +167,7 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/suggestion5"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -217,6 +222,7 @@
             android:background="@drawable/chatmain_bg"
             android:hint="Ask me Anything..."
             android:paddingLeft="74dp"
+            android:paddingRight="74dp"
             android:textColor="@color/white"
             android:textColorHint="#B49090"
             android:textSize="16sp"
