@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +20,22 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class OTPActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private String verificationId;
+    private String verificationId,id,name;
     private ProgressDialog progressDialog;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +44,10 @@ public class OTPActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         verificationId = getIntent().getStringExtra("verificationId");
+        id = getIntent().getStringExtra("id");
+        name = getIntent().getStringExtra("name");
+        db = FirebaseFirestore.getInstance();
+
 
         TextView signinBtn = findViewById(R.id.signin);
         TextView resendBtn = findViewById(R.id.resend);
@@ -109,7 +119,26 @@ public class OTPActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            String userUID = user.getUid();
+                            String email = id;
+
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("userID", userUID);
+                            userData.put("email_phone", email);
+                            userData.put("name",name);
+
+                            db.collection("users").document(userUID)
+                                    .set(userData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Save Status","User Details Saved");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.d("Save Status","User Details Not Saved");
+                                    });
+                        }
+                            // Sign in success, update UI with the signed-in user's information
                         Intent intent = new Intent(OTPActivity.this, StartConversationActivity.class);
                         startActivity(intent);
                         progressDialog.dismiss();

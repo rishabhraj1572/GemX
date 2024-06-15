@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +18,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +45,7 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         TextView signinBtn = findViewById(R.id.signin);
         Button sendOTP = findViewById(R.id.send_btn);
@@ -85,6 +92,11 @@ public class SignupActivity extends AppCompatActivity {
             String id = userId.getText().toString();
             String pass = userPass.getText().toString();
 
+            if(TextUtils.isEmpty(name)){
+                Toast.makeText(this, "Enter your Name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if(!isValidEmail(id) && !isValidPhoneNumber(id)){
                 Toast.makeText(this, "Enter valid Email or Number", Toast.LENGTH_SHORT).show();
                 return;
@@ -102,28 +114,8 @@ public class SignupActivity extends AppCompatActivity {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                mAuth.createUserWithEmailAndPassword(id, pass)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                                // Log in the user
-                                mAuth.signInWithEmailAndPassword(id, pass)
-                                        .addOnCompleteListener(loginTask -> {
-                                            if (loginTask.isSuccessful()) {
-                                                // Login success,
-                                                Intent intent = new Intent(this, StartConversationActivity.class);
-                                                startActivity(intent);
-                                                finish(); // Close the signup activity
-                                            } else {
-                                                // Login failed, show error message
-                                                Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            } else {
-                                // Registration failed
-                                Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                registerUser(name,id,pass);
+
             }
 
             if (isValidPhoneNumber(id)) {
@@ -132,39 +124,90 @@ public class SignupActivity extends AppCompatActivity {
                 progressDialog.setMessage("Sending OTP to your Registered Phone Number");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                // Do OTP work
-                PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(id)              // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout duration
-                        .setActivity(this)
-                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                            @Override
-                            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                                progressDialog.dismiss();
-                            }
 
-                            @Override
-                            public void onVerificationFailed(FirebaseException e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(SignupActivity.this, "Sending OTP Failed!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                                // Handle the code sent event
-                                Intent intent = new Intent(SignupActivity.this, OTPActivity.class);
-                                intent.putExtra("verificationId", verificationId);
-                                startActivity(intent);
-                                progressDialog.dismiss();
-                            }
-                        })
-                        .build();
-                PhoneAuthProvider.verifyPhoneNumber(options);
+                sendOTP(name,id);
             }
 
 
         });
 
+    }
+
+    private void sendOTP(String name, String id) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(id)              // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout duration
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignupActivity.this, "Sending OTP Failed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        // Handle the code sent event
+                        Intent intent = new Intent(SignupActivity.this, OTPActivity.class);
+                        intent.putExtra("verificationId", verificationId);
+                        intent.putExtra("name",name);
+                        intent.putExtra("id",id);
+                        startActivity(intent);
+                        progressDialog.dismiss();
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private void registerUser(String name, String id, String pass) {
+        mAuth.createUserWithEmailAndPassword(id, pass)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            String userUID = user.getUid();
+                            String email = id;
+
+                            // Create a map to store user data
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("userID", userUID);
+                            userData.put("email_phone", email);
+                            userData.put("name",name);
+
+                            // Save the user data to Firestore
+                            db.collection("users").document(userUID)
+                                    .set(userData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Save Status","User Details Saved");
+
+                                        // Log in the user
+                                        mAuth.signInWithEmailAndPassword(id, pass)
+                                                .addOnCompleteListener(loginTask -> {
+                                                    if (loginTask.isSuccessful()) {
+                                                        Intent intent = new Intent(this, StartConversationActivity.class);
+                                                        startActivity(intent);
+                                                        finish(); // Close the signup activity
+                                                    } else {
+                                                        Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.d("Save Status","User Details Not Saved");
+                                    });
+                        } else {
+                            Toast.makeText(this, "Registration successful, but unable to retrieve user UID.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private boolean isValidEmail(String email) {
