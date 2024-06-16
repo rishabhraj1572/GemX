@@ -166,21 +166,6 @@
                     android:textColor="@color/white"
                     android:textSize="16dp" />
 
-                <TextView
-                    android:id="@+id/suggestion5"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/chatsuggestions_bg"
-                    android:gravity="center_vertical|start"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="\u25CF   Explain quantum computing"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
