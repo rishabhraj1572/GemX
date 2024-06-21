@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,12 +22,21 @@ public class StartConversationActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Mark that the user has seen the StartConversationActivity
+        saveHasSeenStartConversation(true);
+
         Button start = findViewById(R.id.startconvobutton);
 
         start.setOnClickListener(v->{
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
         });
+    }
+    private void saveHasSeenStartConversation(boolean hasSeen) {
+        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("has_seen_start_conversation", hasSeen)
+                .apply();
     }
 
     @Override

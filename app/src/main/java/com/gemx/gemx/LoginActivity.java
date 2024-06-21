@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,7 +23,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check login status
+        if (isLoggedIn()) {
+            redirectToAppropriateActivity();
+            finish(); // Close the login activity
+            return;
+        }
 //        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
 
@@ -68,6 +75,22 @@ public class LoginActivity extends AppCompatActivity {
             loginUser(email, password);
         });
     }
+    private boolean isLoggedIn() {
+        return getSharedPreferences("app_prefs", MODE_PRIVATE).getBoolean("is_logged_in", false);
+    }
+    private void redirectToAppropriateActivity() {
+        boolean hasSeenStartConversation = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean("has_seen_start_conversation", false);
+
+        Intent intent;
+        if (hasSeenStartConversation) {
+            intent = new Intent(this, HomeActivity.class);
+        } else {
+            intent = new Intent(this, StartConversationActivity.class);
+        }
+        startActivity(intent);
+    }
+
 
     private void loginUser(String email, String password) {
         progressDialog.setTitle("Please Wait");
@@ -79,6 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
+                        saveLoginStatus(true); // Save login status
+                        saveHasSeenStartConversation(false); // Reset start conversation status
                         // Login successful
                         Intent intent = new Intent(LoginActivity.this, StartConversationActivity.class);
                         startActivity(intent);
@@ -88,6 +113,19 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void saveHasSeenStartConversation(boolean hasSeen) {
+        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("has_seen_start_conversation", hasSeen)
+                .apply();
+    }
+    private void saveLoginStatus(boolean isLoggedIn) {
+        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("is_logged_in", isLoggedIn)
+                .apply();
     }
 
     private boolean isValidEmail(String email) {

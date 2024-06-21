@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     private FirebaseFirestore db;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
-    private int size;
     private boolean isFetchingData = false;
 
     @Override
@@ -40,36 +39,33 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        initializeUI();
+        setupRecyclerView();
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        // Fetch history data
+        retrieveHistory();
+    }
+
+    private void initializeUI() {
         ConstraintLayout chatWithGemx = findViewById(R.id.chatwithGemx);
         ImageView talkWithGemx = findViewById(R.id.talkWithGemX);
 
-        chatWithGemx.setOnClickListener(v -> {
-            // Start ChattingActivity
-            Intent intent = new Intent(HomeActivity.this, ChattingActivity.class);
-            startActivity(intent);
-        });
+        chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
+        talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
+    }
 
-        talkWithGemx.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, TalkActivity.class);
-            startActivity(intent);
-        });
-
+    private void setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         itemList = new ArrayList<>();
         itemId = new ArrayList<>();
-
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-
-        // Create the adapter here
         itemAdapter = new ChatHistoryItemAdapter(itemList, itemId);
         itemAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(itemAdapter);
-
-        // Fetch history data
-        retrieveHistory();
     }
 
     private void retrieveHistory() {
@@ -95,18 +91,15 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                                                     long lastUpdate = task1.getResult().getLong("last_update");
                                                     collectionList.add(new Pair<>(lastUpdate, collectionId));
                                                 } else {
-                                                    System.out.println("Document does not exist or task failed: " + task1.getException());
+                                                    Log.w("Firestore", "Document does not exist or task failed: ", task1.getException());
                                                 }
                                             });
                                     tasks.add(docTask);
                                 }
                             }
-                            // Wait tasks to complete
                             Tasks.whenAllComplete(tasks).addOnCompleteListener(allTasks -> {
-                                // Sort in descending order
                                 Collections.sort(collectionList, (o1, o2) -> Long.compare(o2.first, o1.first));
-                                // Start processing
-                                startProcessing(0,collectionList);
+                                runOnUiThread(() -> startProcessing(0, collectionList));
                             });
                         } else {
                             Log.w("Firestore", "Error getting collections.", task.getException());
@@ -118,11 +111,9 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
     private void startProcessing(int index, List<Pair<Long, String>> collectionList) {
         if (index < collectionList.size()) {
-            Pair<Long, String> entry = collectionList.get(index);
-            String collectionId = entry.second;
+            String collectionId = collectionList.get(index).second;
             fetchDocument(index, collectionId, collectionList);
         } else {
-            // All items done notify adapter
             itemAdapter.notifyDataSetChanged();
         }
     }
@@ -140,9 +131,8 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                     }
 
                     if (index + 1 == collectionList.size()) {
-                        itemAdapter.notifyDataSetChanged();
+                        runOnUiThread(() -> itemAdapter.notifyDataSetChanged());
                     } else {
-                        //ext item
                         startProcessing(index + 1, collectionList);
                     }
                 });
@@ -153,21 +143,21 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         super.onBackPressed();
         finish();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-        if (itemAdapter != null && itemList.size() != size) {
+        if (itemAdapter != null && itemList.size() != itemAdapter.getItemCount()) {
             retrieveHistory();
         }
     }
+
 
     @Override
     public void onItemClick(int position) {
         Intent i = new Intent(this, ChattingActivity.class);
         String historyItemId = itemId.get(position);
         i.putExtra("historyItemId", historyItemId);
-        Log.d("Clicked Item",historyItemId);
+        Log.d("Clicked Item", historyItemId);
         startActivity(i);
     }
 }
