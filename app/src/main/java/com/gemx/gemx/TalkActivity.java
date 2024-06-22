@@ -238,14 +238,11 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
-            // Setting language
             int result = textToSpeech.setLanguage(Locale.US);
-            // Language data is missing or the language is not supported
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e(TAG, "Language not supported");
             } else {
                 Log.d(TAG, "Text-to-Speech engine initialized successfully");
-                // Set UtteranceProgressListener after successful initialization
                 textToSpeech.setOnUtteranceProgressListener(utteranceProgressListener);
             }
         } else {
@@ -339,21 +336,17 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
-            // Speech synthesis started
             micAnim.setVisibility(View.GONE);
         }
 
         @Override
         public void onDone(String utteranceId) {
-            // Speech synthesis completed
-            // Call your function here
             System.out.println("Speech Ended");
             startListening();
         }
 
         @Override
         public void onError(String utteranceId) {
-            // Speech synthesis error
             micAnim.setVisibility(View.VISIBLE);
         }
     };
