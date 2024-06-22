@@ -45,6 +45,9 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        ImageView menu = findViewById(R.id.menu);
+        menu.setOnClickListener(v-> mAuth.signOut());
+
         // Fetch history data
         retrieveHistory();
     }
@@ -141,14 +144,12 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        finishAffinity();
     }
     @Override
     protected void onResume() {
         super.onResume();
-        if (itemAdapter != null && itemList.size() != itemAdapter.getItemCount()) {
             retrieveHistory();
-        }
     }
 
 

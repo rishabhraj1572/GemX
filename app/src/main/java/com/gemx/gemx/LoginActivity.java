@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,20 +24,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Check login status
-        if (isLoggedIn()) {
-            redirectToAppropriateActivity();
-            finish(); // Close the login activity
-            return;
-        }
-//        EdgeToEdge.enable(this);
-
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(LoginActivity.this, R.style.MyAlertDialogStyle);
-
 
         Button loginBtn = findViewById(R.id.btn_login);
         TextView createBtn = findViewById(R.id.create);
@@ -75,9 +66,6 @@ public class LoginActivity extends AppCompatActivity {
             loginUser(email, password);
         });
     }
-    private boolean isLoggedIn() {
-        return getSharedPreferences("app_prefs", MODE_PRIVATE).getBoolean("is_logged_in", false);
-    }
     private void redirectToAppropriateActivity() {
         boolean hasSeenStartConversation = getSharedPreferences("app_prefs", MODE_PRIVATE)
                 .getBoolean("has_seen_start_conversation", false);
@@ -91,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void loginUser(String email, String password) {
         progressDialog.setTitle("Please Wait");
         progressDialog.setMessage("Logging in...");
@@ -102,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        saveLoginStatus(true); // Save login status
                         saveHasSeenStartConversation(false); // Reset start conversation status
                         // Login successful
                         Intent intent = new Intent(LoginActivity.this, StartConversationActivity.class);
@@ -121,12 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                 .putBoolean("has_seen_start_conversation", hasSeen)
                 .apply();
     }
-    private void saveLoginStatus(boolean isLoggedIn) {
-        getSharedPreferences("app_prefs", MODE_PRIVATE)
-                .edit()
-                .putBoolean("is_logged_in", isLoggedIn)
-                .apply();
-    }
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -136,5 +116,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            redirectToAppropriateActivity();
+        }
     }
 }

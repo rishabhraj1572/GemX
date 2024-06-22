@@ -76,8 +76,9 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Go ahead I'm listening"
         android:textColor="#FDD6D6"
         android:textSize="16sp"
@@ -149,7 +150,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/msgText"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -177,7 +178,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-                android:id="@+id/imageView16"
+                android:id="@+id/mic_btn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="30dp"
@@ -219,7 +220,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_rawRes="@raw/anim" />
+                app:lottie_rawRes="@raw/anim"
+                android:visibility="gone"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
