@@ -99,8 +99,8 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void startListening() {
         runOnUiThread(() -> {
-            saveCurrentVolumeLevels();
-            muteAllSounds();
+//            saveCurrentVolumeLevels();
+//            muteAllSounds();
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
@@ -110,38 +110,38 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-    private void saveCurrentVolumeLevels() {
-        if (audioManager != null) {
-            originalSystemVolume = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
-            originalNotificationVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
-            originalRingVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
-        }
-    }
+//    private void saveCurrentVolumeLevels() {
+//        if (audioManager != null) {
+//            originalSystemVolume = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+//            originalNotificationVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
+//            originalRingVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+//        }
+//    }
+//
+//    private void muteAllSounds() {
+//        if (audioManager != null) {
+//            audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, 0);
+//            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
+//            audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
+//        }
+//    }
 
-    private void muteAllSounds() {
-        if (audioManager != null) {
-            audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
-        }
-    }
-
-    private void restoreVolumeLevelsDelayed(String delay) {
-        if(delay != null){
-            handler.postDelayed(() -> restoreVolumeLevels(), Integer.parseInt(delay));
-        }else{
-            handler.postDelayed(() -> restoreVolumeLevels(), 4000);
-        }
-
-    }
-
-    private void restoreVolumeLevels() {
-        if (audioManager != null) {
-            audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, originalSystemVolume, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, originalNotificationVolume, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_RING, originalRingVolume, 0);
-        }
-    }
+//    private void restoreVolumeLevelsDelayed(String delay) {
+//        if(delay != null){
+//            handler.postDelayed(() -> restoreVolumeLevels(), Integer.parseInt(delay));
+//        }else{
+//            handler.postDelayed(() -> restoreVolumeLevels(), 4000);
+//        }
+//
+//    }
+//
+//    private void restoreVolumeLevels() {
+//        if (audioManager != null) {
+//            audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, originalSystemVolume, 0);
+//            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, originalNotificationVolume, 0);
+//            audioManager.setStreamVolume(AudioManager.STREAM_RING, originalRingVolume, 0);
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -158,7 +158,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        restoreVolumeLevelsDelayed("1000");
+//        restoreVolumeLevelsDelayed("1000");
         finish();
     }
 
@@ -197,14 +197,14 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
         @Override
         public void onEndOfSpeech() {
             Log.d(TAG, "Speech ended");
-            restoreVolumeLevelsDelayed(null);
+//            restoreVolumeLevelsDelayed(null);
         }
 
         @Override
         public void onError(int error) {
             Log.e(TAG, "Error: " + error);
             micAnim.setVisibility(View.GONE);
-            restoreVolumeLevelsDelayed("500");
+//            restoreVolumeLevelsDelayed("500");
         }
 
         @Override
@@ -213,7 +213,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (matches != null && !matches.isEmpty()) {
                 String recognizedText = matches.get(0);
                 Log.d(TAG, "Recognized text: " + recognizedText);
-                restoreVolumeLevelsDelayed(null);
+//                restoreVolumeLevelsDelayed(null);
                 msgText.setText(recognizedText);
                 sendMessageToGemini(recognizedText);
             }
