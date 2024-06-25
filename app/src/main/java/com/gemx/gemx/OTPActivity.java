@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class OTPActivity extends AppCompatActivity {
         verificationId = getIntent().getStringExtra("verificationId");
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
+
         db = FirebaseFirestore.getInstance();
 
 
@@ -127,22 +129,51 @@ public class OTPActivity extends AppCompatActivity {
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("userID", userUID);
                             userData.put("email_phone", email);
-                            userData.put("name",name);
 
-                            db.collection("users").document(userUID)
-                                    .set(userData)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d("Save Status","User Details Saved");
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.d("Save Status","User Details Not Saved");
-                                    });
+                            //this block is for signup
+                            if(!TextUtils.isEmpty(name)){
+                                userData.put("name",name);
+                                db.collection("users").document(userUID)
+                                        .set(userData)
+                                        .addOnSuccessListener(aVoid -> {
+                                            // Sign in success, update UI with the signed-in user's information
+                                            Intent intent = new Intent(OTPActivity.this, StartConversationActivity.class);
+                                            startActivity(intent);
+                                            progressDialog.dismiss();
+                                            finishAffinity();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.d("Save Status","User Details Not Saved");
+                                            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                            //this is for login
+                            else{
+                                db.collection("users").document(userUID).get()
+                                        .addOnSuccessListener(aVoid -> {
+                                            String name = aVoid.getString("name");
+                                            if(name == null){
+                                                //new user is trying to login
+                                                Toast.makeText(this, "User Not Registered", Toast.LENGTH_SHORT).show();
+                                                mAuth.signOut();
+                                                finish();
+                                            }
+                                            else{
+                                                //old user
+                                                // Sign in success, update UI with the signed-in user's information
+                                                Intent intent = new Intent(OTPActivity.this, StartConversationActivity.class);
+                                                startActivity(intent);
+                                                progressDialog.dismiss();
+                                                finishAffinity();
+                                            }
+
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                                        });
+                            }
                         }
-                            // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(OTPActivity.this, StartConversationActivity.class);
-                        startActivity(intent);
-                        progressDialog.dismiss();
-                        finishAffinity();
+
                     } else {
                         // Sign in failed, display a message and update the UI
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {

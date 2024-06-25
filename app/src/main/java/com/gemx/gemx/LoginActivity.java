@@ -1,10 +1,15 @@
 package com.gemx.gemx;
 
+import static com.gemx.gemx.SignupActivity.isValidPhoneNumber;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,8 +18,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,23 +59,84 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+        et_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // No need
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (isValidEmail(charSequence.toString())) {
+                    et_pass.setVisibility(View.VISIBLE);
+                } else {
+                    et_pass.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // No need
+            }
+        });
+
         loginBtn.setOnClickListener(v -> {
             String email = et_email.getText().toString().trim();
             String password = et_pass.getText().toString().trim();
 
-            if (!isValidEmail(email)) {
-                Toast.makeText(this, "Enter a valid email", Toast.LENGTH_SHORT).show();
+            if (!isValidEmail(email) && !isValidPhoneNumber(email)) {
+                Toast.makeText(this, "Enter a valid input", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if(TextUtils.isEmpty(password)){
-                Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show();
-                return;
+            if (isValidEmail(email)) {
+                if(TextUtils.isEmpty(password)){
+                    Toast.makeText(this, "Enter Password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                loginUser(email, password);
+            }
+            if (isValidPhoneNumber(email)) {
+                progressDialog.setTitle("Please Wait");
+                progressDialog.setMessage("Sending OTP to your Registered Phone Number");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                sendOTP(email);
             }
 
-
-            loginUser(email, password);
         });
+    }
+
+    private void sendOTP(String id) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(id)              // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout duration
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "Sending OTP Failed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        // Handle the code sent event
+                        Intent intent = new Intent(LoginActivity.this, OTPActivity.class);
+                        intent.putExtra("verificationId", verificationId);
+                        intent.putExtra("name","");
+                        intent.putExtra("id",id);
+                        startActivity(intent);
+                        progressDialog.dismiss();
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
     private void redirectToAppropriateActivity() {
         boolean hasSeenStartConversation = getSharedPreferences("app_prefs", MODE_PRIVATE)
