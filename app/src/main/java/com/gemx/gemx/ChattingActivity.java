@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gemx.gemx.Adapters.ChatItemAdapter;
+import com.google.ai.client.generativeai.Chat;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
+import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.common.util.concurrent.FutureCallback;
@@ -29,6 +31,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +64,7 @@ public class ChattingActivity extends AppCompatActivity {
     private int totalMessagesToLoad;
     private int messagesLoadedCount;
     String epch;
+    LinearLayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,14 +91,16 @@ public class ChattingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
         chatsView = findViewById(R.id.chatsRecyclerView);
-        chatsView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        chatsView.setLayoutManager(layoutManager);
         scrollView = findViewById(R.id.scroll);
         messageEdit = findViewById(R.id.editTextMessage);
         messageEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         ImageView sendBtn = findViewById(R.id.sendBtn);
         ImageView backBtn = findViewById(R.id.back);
 
-        //chatting components
+        //chatting componentsh
         gm = new GenerativeModel("gemini-1.5-flash",AppConfig.geminiAPIkey);
         sender = new ArrayList<>();
         receiver = new ArrayList<>();
@@ -245,7 +254,7 @@ public class ChattingActivity extends AppCompatActivity {
                 });
     }
 
-    private void sendMessageToGemini(String message) {
+    private void sendMessageToGemini1(String message) {
 
         if (message.isEmpty()) {
             return;
@@ -335,6 +344,116 @@ public class ChattingActivity extends AppCompatActivity {
         Texthello.setVisibility(View.GONE);
         Textanything.setVisibility(View.GONE);
     }
+    private void sendMessageToGemini(String message) {
+        if (message.isEmpty()) {
+            return;
+        }
+
+        Content.Builder userMessageBuilder = new Content.Builder();
+        userMessageBuilder.setRole("user");
+        userMessageBuilder.addText(message);
+        Content userMessage = userMessageBuilder.build();
+
+        // Start a chat session with history
+        if (history == null) {
+            history = new ArrayList<>();
+        }
+        history.add(userMessage);
+        ChatFutures chat = ChatFutures.from(gm.startChat(history));
+
+        Publisher<GenerateContentResponse> streamingResponse = chat.sendMessageStream(userMessage);
+
+        sender.add(message);
+        receiver.add("Waiting For Response");
+        chatsView.smoothScrollToPosition(receiver.size() - 1);
+        itemAdapter.notifyDataSetChanged();
+
+        StringBuilder outputContent = new StringBuilder();
+        StringBuilder msgBuilder = new StringBuilder();
+        streamingResponse.subscribe(new Subscriber<GenerateContentResponse>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+                s.request(Long.MAX_VALUE);
+            }
+
+            @Override
+            public void onNext(GenerateContentResponse generateContentResponse) {
+                String chunk = generateContentResponse.getText();
+                String transformedChunk = chunk.replace("**", "").replace("*", "●").replace("##", "");
+                msgBuilder.append(transformedChunk);
+                String currentMessage = msgBuilder.toString();
+                Log.d("Chunk", chunk);
+
+                runOnUiThread(() -> {
+                    receiver.set(receiver.size() - 1, currentMessage);
+                    itemAdapter.notifyDataSetChanged();
+                    chatsView.scrollToPosition(receiver.size() - 1); // Scroll to the bottom
+                });
+
+                outputContent.append(transformedChunk);
+            }
+
+            @Override
+            public void onComplete() {
+                String resultText = outputContent.toString();
+                String resultText1 = resultText.replace("**", "").replace("*", "●").replace("##", "");
+                Log.d("Gemini Response", resultText);
+
+                runOnUiThread(() -> {
+                    receiver.set(receiver.size() - 1, resultText1);
+                    itemAdapter.notifyDataSetChanged();
+//                    chatsView.smoothScrollToPosition(receiver.size() - 1);
+
+                    Content.Builder modelResponse = new Content.Builder();
+                    modelResponse.setRole("model");
+                    modelResponse.addText(resultText1);
+                    history.add(modelResponse.build());
+
+                    Map<String, Object> userData = new HashMap<>();
+                    userData.put("chat_name", sender.get(0));
+                    userData.put("last_update", epochTime);
+
+                    String userUID = user.getUid();
+                    db.collection("chats").document(userUID + "_" + epochTime)
+                            .set(userData)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Save Status", "Details Saved");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("Save Status", "Not Saved");
+                            });
+
+                    Map<String, Object> messageData = new HashMap<>();
+                    messageData.put("message_sent", message);
+                    messageData.put("message_received", resultText1);
+                    long epochTime1 = System.currentTimeMillis();
+
+                    db.collection("chats").document(userUID + "_" + epochTime)
+                            .collection("messsages").document(String.valueOf(epochTime1))
+                            .set(messageData)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Save Status", "Saved");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("Save Status", "Not Saved");
+                            });
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+        messageEdit.setText("");
+
+        // Update UI visibility
+        scrollView.setVisibility(View.GONE);
+        chatsView.setVisibility(View.VISIBLE);
+        Texthello.setVisibility(View.GONE);
+        Textanything.setVisibility(View.GONE);
+    }
 
     private void sendMessageToGeminiExistingChat(String message) {
 
@@ -354,15 +473,91 @@ public class ChattingActivity extends AppCompatActivity {
         history.add(userMessage);
         ChatFutures chat = ChatFutures.from(gm.startChat(history));
 
+        Publisher<GenerateContentResponse> streamingResponse = chat.sendMessageStream(userMessage);
+
         sender.add(message);
-        receiver.add("Waiting For Response");
+        receiver.add("Waiting For Response... ");
         chatsView.smoothScrollToPosition(receiver.size() - 1);
         itemAdapter.notifyDataSetChanged();
 
-        Executor executor = Executors.newSingleThreadExecutor();
-        ListenableFuture<GenerateContentResponse> response = chat.sendMessage(userMessage);
+        StringBuilder outputContent = new StringBuilder();
+        StringBuilder msgBuilder = new StringBuilder();
 
-        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
+        streamingResponse.subscribe(new Subscriber<GenerateContentResponse>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+                s.request(Long.MAX_VALUE);
+            }
+
+            @Override
+            public void onNext(GenerateContentResponse generateContentResponse) {
+                String chunk = generateContentResponse.getText();
+                String transformedChunk = chunk.replace("**", "").replace("*", "●").replace("##", "");
+                msgBuilder.append(transformedChunk);
+                String currentMessage = msgBuilder.toString();
+                Log.d("Chunk", chunk);
+
+                runOnUiThread(() -> {
+                    receiver.set(receiver.size() - 1, currentMessage);
+                    itemAdapter.notifyDataSetChanged();
+                    chatsView.scrollToPosition(receiver.size() - 1); // Scroll to the bottom
+                });
+
+                outputContent.append(transformedChunk);
+            }
+
+            @Override
+            public void onComplete() {
+                String resultText = outputContent.toString();
+                String resultText1 = resultText.replace("**", "").replace("*", "●").replace("##", "");
+                Log.d("Gemini Response", resultText);
+
+                runOnUiThread(() -> {
+                    receiver.set(receiver.size() - 1, resultText1);
+                    itemAdapter.notifyDataSetChanged();
+//                    chatsView.smoothScrollToPosition(receiver.size() - 1);
+                    Content.Builder modelResponse = new Content.Builder();
+                    modelResponse.setRole("model");
+                    modelResponse.addText(resultText1);
+                    history.add(modelResponse.build());
+
+                    Map<String, Object> userData = new HashMap<>();
+                    userData.put("chat_name", sender.get(0));
+                    userData.put("last_update",epochTime);
+                    String userUID = user.getUid();
+                    db.collection("chats").document(userUID+"_"+epch)
+                            .set(userData)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Save Status","Details Saved");
+
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("Save Status","Not Saved");
+                            });
+                    Map<String, Object> messageData = new HashMap<>();
+                    messageData.put("message_sent", message);
+                    messageData.put("message_received",resultText1);
+                    long epochTime1 = System.currentTimeMillis();
+
+                    db.collection("chats").document(userUID+"_"+epch)
+                            .collection("messsages").document(String.valueOf(epochTime1))
+                            .set(messageData)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Save Status","Saved");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("Save Status","Not Saved");
+                            });
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+       /* Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
                 String resultText = result.getText();
@@ -404,10 +599,6 @@ public class ChattingActivity extends AppCompatActivity {
                             .addOnFailureListener(e -> {
                                 Log.d("Save Status","Not Saved");
                             });
-
-
-
-
                 });
             }
 
@@ -415,7 +606,7 @@ public class ChattingActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 t.printStackTrace();
             }
-        }, executor);
+        }, executor);*/
 
         messageEdit.setText("");
 
