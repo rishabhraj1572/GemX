@@ -17,11 +17,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gemx.gemx.Watchers.OtpTextWatcher;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -37,6 +45,8 @@ public class OTPActivity extends AppCompatActivity {
     private String verificationId,id,name;
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +72,21 @@ public class OTPActivity extends AppCompatActivity {
         EditText otp5 = findViewById(R.id.otp_5);
         EditText otp6 = findViewById(R.id.otp_6);
         ImageView backBtn = findViewById(R.id.back);
+        ImageView gLogin = findViewById(R.id.gmail);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        gLogin.setOnClickListener(v->{
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setMessage("Logging In...");
+            progressDialog.show();
+            signIn();
+        });
 
         backBtn.setOnClickListener(v -> finish());
 
@@ -101,15 +126,62 @@ public class OTPActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-//            resendVerificationCode(); // Resend the OTP
+            resendVerificationCode(); // Resend the OTP
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                }
-            }, 3000); // 3 seconds delay
         });
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                progressDialog.dismiss();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("glogin", "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("userID", user.getUid());
+                        userData.put("email_phone", user.getEmail());
+                        userData.put("name",user.getDisplayName());
+
+                        // Save the user data to Firestore
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users").document(user.getUid())
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("Save Status","User Details Saved");
+                                    Intent i = new Intent(OTPActivity.this, StartConversationActivity.class);
+                                    startActivity(i);
+                                    finishAffinity();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.d("Save Status","User Details Not Saved");
+                                });
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("glogin", "signInWithCredential:failure", task.getException());
+                        progressDialog.dismiss();
+                    }
+                });
     }
 
     private void verifyCode(String code) {
@@ -130,7 +202,7 @@ public class OTPActivity extends AppCompatActivity {
                             userData.put("userID", userUID);
                             userData.put("email_phone", email);
 
-                            //this block is for signup
+                            //signup
                             if(!TextUtils.isEmpty(name)){
                                 userData.put("name",name);
                                 db.collection("users").document(userUID)
@@ -147,7 +219,7 @@ public class OTPActivity extends AppCompatActivity {
                                             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                                         });
                             }
-                            //this is for login
+                            //login
                             else{
                                 db.collection("users").document(userUID).get()
                                         .addOnSuccessListener(aVoid -> {
@@ -175,9 +247,8 @@ public class OTPActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        // Sign in failed, display a message and update the UI
+                        // Sign in failed
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            // The verification code entered was invalid
                             Toast.makeText(OTPActivity.this, "Invalid OTP. Please try again.", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
@@ -201,6 +272,7 @@ public class OTPActivity extends AppCompatActivity {
                     public void onVerificationFailed(FirebaseException e) {
                         // Verification failed
                         Toast.makeText(OTPActivity.this, "Verification failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -208,6 +280,7 @@ public class OTPActivity extends AppCompatActivity {
                         // Code sent, update verification ID
                         verificationId = newVerificationId;
                         Toast.makeText(OTPActivity.this, "OTP Resent.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 })
                 .build();

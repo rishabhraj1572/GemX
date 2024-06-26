@@ -46,6 +46,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:18.1.0")
     implementation ("com.google.firebase:firebase-firestore:24.2.1")
     implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
     implementation("com.google.guava:guava:31.0.1-android")

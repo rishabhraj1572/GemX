@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,15 +17,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +66,21 @@ public class LoginActivity extends AppCompatActivity {
         EditText et_pass=findViewById(R.id.et_password);
         TextView forgotBtn = findViewById(R.id.tv_forgot_password);
         ImageView backBtn = findViewById(R.id.back);
+        ImageView gLogin = findViewById(R.id.gmail);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        gLogin.setOnClickListener(v->{
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setMessage("Logging In...");
+            progressDialog.show();
+            signIn();
+        });
 
         backBtn.setOnClickListener(v-> finish());
 
@@ -107,6 +142,59 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                progressDialog.dismiss();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("glogin", "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("userID", user.getUid());
+                        userData.put("email_phone", user.getEmail());
+                        userData.put("name",user.getDisplayName());
+
+                        // Save the user data to Firestore
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users").document(user.getUid())
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("Save Status","User Details Saved");
+                                    Intent i = new Intent(LoginActivity.this, StartConversationActivity.class);
+                                    startActivity(i);
+                                    finishAffinity();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.d("Save Status","User Details Not Saved");
+                                });
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("glogin", "signInWithCredential:failure", task.getException());
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
     private void sendOTP(String id) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(id)              // Phone number to verify
@@ -138,6 +226,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
+
     private void redirectToAppropriateActivity() {
         boolean hasSeenStartConversation = getSharedPreferences("app_prefs", MODE_PRIVATE)
                 .getBoolean("has_seen_start_conversation", false);
@@ -167,7 +256,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish(); // Close the login activity
                     } else {
-                        // Login failed, show error message
+                        // Login failed
                         Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

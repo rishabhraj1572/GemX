@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,6 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gemx.gemx.Adapters.ChatHistoryItemAdapter;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +52,26 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         ImageView menu = findViewById(R.id.menu);
-        menu.setOnClickListener(v-> mAuth.signOut());
+        menu.setOnClickListener(v-> {
+
+            //sign-out intent temp
+            mAuth.signOut();
+            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        FirebaseAuth.getInstance().signOut(); // very important if you are using firebase.
+                    }
+                }
+            });
+        });
 
         // Fetch history data
         retrieveHistory();

@@ -156,7 +156,6 @@
         android:layout_above="@+id/lastText"
         android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="193dp"
         android:src="@drawable/gmailnew" />
 
     <!-- Bottom Line -->
