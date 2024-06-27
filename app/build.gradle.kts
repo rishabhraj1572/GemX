@@ -48,7 +48,12 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:18.1.0")
     implementation ("com.google.firebase:firebase-firestore:24.2.1")
+    implementation("com.google.firebase:firebase-storage")
+
     implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
     implementation("com.google.guava:guava:31.0.1-android")
+
     implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 }
