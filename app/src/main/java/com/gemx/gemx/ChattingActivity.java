@@ -829,7 +829,6 @@ public class ChattingActivity extends AppCompatActivity {
 
     private void checkAndRequestPermissions() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            // This block will be executed for Android versions up to API level 12 (Honeycomb MR2)
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -840,7 +839,6 @@ public class ChattingActivity extends AppCompatActivity {
                 pickImage();
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // This block will be executed for Android versions API level 13 and above (Ice Cream Sandwich and beyond)
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                     != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
