@@ -66,6 +66,7 @@ public class ChattingActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_CODE = 100;
+    private static final int REQUEST_CODE_READ_STORAGE = 101;
     RecyclerView chatsView;
     List<String> sender, receiver,imageUrlList;
     private ChatItemAdapter itemAdapter;
@@ -828,17 +829,14 @@ public class ChattingActivity extends AppCompatActivity {
     }
 
     private void checkAndRequestPermissions() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Toast.makeText(this, "Storage permission is needed to pick an image", Toast.LENGTH_LONG).show();
-                }
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-            }else{
+        if (Build.VERSION.SDK_INT <= 32) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_STORAGE);
+            } else {
+                // Permission already granted
                 pickImage();
             }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        } else if (Build.VERSION.SDK_INT >= 33) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                     != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
@@ -862,6 +860,14 @@ public class ChattingActivity extends AppCompatActivity {
                 Toast.makeText(this, "Permission denied. Cannot pick image.", Toast.LENGTH_SHORT).show();
             }
         }
+        if (requestCode == REQUEST_CODE_READ_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Read storage permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
 }
