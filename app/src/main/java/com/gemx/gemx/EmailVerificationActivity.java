@@ -2,8 +2,15 @@ package com.gemx.gemx;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,24 +36,26 @@ public class EmailVerificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_verification);
 
         progressDialog = new ProgressDialog(EmailVerificationActivity.this,R.style.MyAlertDialogStyle);
-
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         Intent i = getIntent();
         email = i.getStringExtra("email");
         oobcode = i.getStringExtra("oobcode");
 
         TextView emailVerificationSt = findViewById(R.id.email_verification_string);
-
-        emailVerificationSt.setText(Html.fromHtml("Your Email ID <b><font color='white'>" + email + "</font></b> is not yet verified. Please verify the Email ID to proceed the next step."));
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-
         Button verifyBtn = findViewById(R.id.verify_btn);
         ImageView back = findViewById(R.id.back);
 
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append("Your Email ID ");
+        SpannableString spannableEmail = new SpannableString(email);
+        spannableEmail.setSpan(new ForegroundColorSpan(Color.WHITE), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableEmail.setSpan(new StyleSpan(Typeface.BOLD), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(spannableEmail);
+        builder.append(" is not yet verified. Please verify the Email ID to proceed the next step.");
+        emailVerificationSt.setText(builder);
+
         back.setOnClickListener(v-> onBackPressed());
-
-
 
         verifyBtn.setOnClickListener(v->{
 
@@ -78,8 +87,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 verifyEmail();
             }
         }
-
-        
 
     }
 
