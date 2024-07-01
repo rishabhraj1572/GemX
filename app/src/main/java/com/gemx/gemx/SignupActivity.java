@@ -269,22 +269,37 @@ public class SignupActivity extends AppCompatActivity {
                                         mAuth.signInWithEmailAndPassword(id, pass)
                                                 .addOnCompleteListener(loginTask -> {
                                                     if (loginTask.isSuccessful()) {
-                                                        Intent intent = new Intent(this, StartConversationActivity.class);
-                                                        startActivity(intent);
-                                                        finish(); // Close the signup activity
+                                                        if(mAuth.getCurrentUser().isEmailVerified()){
+                                                            System.out.println("Email Verified");
+                                                            Intent intent = new Intent(SignupActivity.this, StartConversationActivity.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }else{
+                                                            System.out.println("Email Not Verified");
+                                                            Intent intent = new Intent(SignupActivity.this, EmailVerificationActivity.class);
+                                                            intent.putExtra("email",email);
+                                                            startActivity(intent);
+                                                            progressDialog.dismiss();
+                                                        }
+//                                                        Intent intent = new Intent(this, StartConversationActivity.class);
+//                                                        startActivity(intent);
+//                                                        finishAffinity(); // Close all activities
                                                     } else {
                                                         Toast.makeText(this, "Login failed: " + loginTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
                                     })
                                     .addOnFailureListener(e -> {
+                                        progressDialog.dismiss();
                                         Log.d("Save Status","User Details Not Saved");
                                     });
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(this, "Registration successful, but unable to retrieve user UID.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(this, "Email Already Registered\nPlease Login", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

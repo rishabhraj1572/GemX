@@ -92,6 +92,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             if ("resetPassword".equals(mode) && oobCode != null) {
                 validateResetCode();
+            } else if ("verifyEmail".equals(mode) && oobCode!= null) {
+                Intent i = new Intent(this,EmailVerificationActivity.class);
+                i.putExtra("oobcode",oobCode);
+                startActivity(i);
+                finishAffinity();
             } else {
                 Toast.makeText(this, "Invalid reset password link", Toast.LENGTH_SHORT).show();
                 finish();
@@ -157,6 +162,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void validateResetCode() {
+
+
         mAuth.verifyPasswordResetCode(oobCode).addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {

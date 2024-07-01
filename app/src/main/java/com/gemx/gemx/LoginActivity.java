@@ -252,9 +252,19 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         saveHasSeenStartConversation(false); // Reset start conversation status
                         // Login successful
-                        Intent intent = new Intent(LoginActivity.this, StartConversationActivity.class);
-                        startActivity(intent);
-                        finish(); // Close the login activity
+                        if(mAuth.getCurrentUser().isEmailVerified()){
+                            System.out.println("Email Verified");
+                            Intent intent = new Intent(LoginActivity.this, StartConversationActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            System.out.println("Email Not Verified");
+                            Intent intent = new Intent(LoginActivity.this, EmailVerificationActivity.class);
+                            intent.putExtra("email",email);
+                            startActivity(intent);
+                        }
+
+//                        finish();
                     } else {
                         // Login failed
                         Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -285,7 +295,11 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            redirectToAppropriateActivity();
+            String phoneNumber = currentUser.getPhoneNumber();
+            if(currentUser.isEmailVerified() || !TextUtils.isEmpty(phoneNumber)){
+                System.out.println("Email or number verified");
+                redirectToAppropriateActivity();
+            }
         }
     }
 }
