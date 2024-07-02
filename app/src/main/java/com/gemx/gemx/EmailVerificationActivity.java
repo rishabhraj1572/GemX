@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class EmailVerificationActivity extends AppCompatActivity {
     private String oobcode,email;
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
+    private TextView emailVerificationSt;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,18 +45,20 @@ public class EmailVerificationActivity extends AppCompatActivity {
         email = i.getStringExtra("email");
         oobcode = i.getStringExtra("oobcode");
 
-        TextView emailVerificationSt = findViewById(R.id.email_verification_string);
+        emailVerificationSt = findViewById(R.id.email_verification_string);
         Button verifyBtn = findViewById(R.id.verify_btn);
         ImageView back = findViewById(R.id.back);
 
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append("Your Email ID ");
-        SpannableString spannableEmail = new SpannableString(email);
-        spannableEmail.setSpan(new ForegroundColorSpan(Color.WHITE), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableEmail.setSpan(new StyleSpan(Typeface.BOLD), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(spannableEmail);
-        builder.append(" is not yet verified. Please verify the Email ID to proceed the next step.");
-        emailVerificationSt.setText(builder);
+        try{
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            builder.append("Your Email ID ");
+            SpannableString spannableEmail = new SpannableString(email);
+            spannableEmail.setSpan(new ForegroundColorSpan(Color.WHITE), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableEmail.setSpan(new StyleSpan(Typeface.BOLD), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.append(spannableEmail);
+            builder.append(" is not yet verified. Please verify the Email ID to proceed the next step.");
+            emailVerificationSt.setText(builder);
+        }catch (Exception ignore){}
 
         back.setOnClickListener(v-> onBackPressed());
 
@@ -99,6 +104,17 @@ public class EmailVerificationActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (!task.isSuccessful()) {
+                    try{
+                        SpannableStringBuilder builder = new SpannableStringBuilder();
+                        builder.append("Your Email ID ");
+                        SpannableString spannableEmail = new SpannableString(email);
+                        spannableEmail.setSpan(new ForegroundColorSpan(Color.WHITE), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        spannableEmail.setSpan(new StyleSpan(Typeface.BOLD), 0, email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        builder.append(spannableEmail);
+                        builder.append(" is not yet verified. Please verify the Email ID to proceed the next step.");
+                        emailVerificationSt.setText(builder);
+                    }catch (Exception ignore){}
+
                     Toast.makeText(EmailVerificationActivity.this, "Invalid or expired reset code", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
 
