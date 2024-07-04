@@ -1,10 +1,18 @@
 package com.gemx.gemx;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,16 +62,36 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        ImageView menu = findViewById(R.id.menu);
+        menu.setOnClickListener(v-> showLogoutDialog());
+
+        // Fetch history data
+        retrieveHistory();
+    }
+
+    private void showLogoutDialog() {
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        ImageView menu = findViewById(R.id.menu);
-        menu.setOnClickListener(v-> {
 
-            //sign-out intent temp
+        Dialog dialog = new Dialog(HomeActivity.this);
+        dialog.setContentView(R.layout.logout_dialog);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        Button logoutYes = dialog.findViewById(R.id.logout_yes);
+        Button logoutNo = dialog.findViewById(R.id.logout_no);
+
+        logoutYes.setOnClickListener(v -> {
+
+            //logout Intent
             mAuth.signOut();
             mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -71,10 +101,15 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                     }
                 }
             });
+
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finishAffinity();
+
         });
 
-        // Fetch history data
-        retrieveHistory();
+        logoutNo.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void initializeUI() {
@@ -185,5 +220,62 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         i.putExtra("historyItemId", historyItemId);
         Log.d("Clicked Item", historyItemId);
         startActivity(i);
+    }
+
+    //delete each item
+    private void deleteItem(int position) {
+        String collectionId = itemId.get(position);
+        db.collection("chats").document(collectionId)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        itemList.remove(position);
+                        itemId.remove(position);
+                        itemAdapter.notifyItemRemoved(position);
+                        deleteFromStorage(collectionId);
+                        Log.d("Firestore", "DocumentSnapshot successfully deleted!");
+                    } else {
+                        Log.w("Firestore", "Error deleting document", task.getException());
+                    }
+                });
+    }
+
+    private void deleteFromStorage(String collectionId) {
+        String storagePrefix = collectionId + "_";
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+        storageRef.child("chatImages").listAll()
+                .addOnSuccessListener(listResult -> {
+                    List<StorageReference> itemsToDelete = new ArrayList<>();
+
+                    for (StorageReference item : listResult.getItems()) {
+                        if (item.getName().startsWith(storagePrefix)) {
+                            itemsToDelete.add(item);
+                        }
+                    }
+
+                    List<Task<Void>> deleteTasks = new ArrayList<>();
+                    for (StorageReference itemRef : itemsToDelete) {
+                        Task<Void> deleteTask = itemRef.delete();
+                        deleteTasks.add(deleteTask);
+                    }
+
+                    Tasks.whenAll(deleteTasks)
+                            .addOnSuccessListener(voidResult -> {
+                                Log.d("Firebase Storage", "All items deleted successfully");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.w("Firebase Storage", "Error deleting items", e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firebase Storage", "Error listing items", e);
+                });
+    }
+
+    @Override
+    public void onItemDelete(int position) {
+        deleteItem(position);
     }
 }
