@@ -249,11 +249,6 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                 }).addOnFailureListener(f->{
                     Log.d("F", String.valueOf(f));
                 });
-
-
-
-
-
     }
 
     private void deleteFromStorage(String collectionId) {
