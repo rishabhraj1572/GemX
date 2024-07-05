@@ -225,19 +225,35 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     //delete each item
     private void deleteItem(int position) {
         String collectionId = itemId.get(position);
-        db.collection("chats").document(collectionId)
-                .delete()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        itemList.remove(position);
-                        itemId.remove(position);
-                        itemAdapter.notifyItemRemoved(position);
-                        deleteFromStorage(collectionId);
-                        Log.d("Firestore", "DocumentSnapshot successfully deleted!");
-                    } else {
-                        Log.w("Firestore", "Error deleting document", task.getException());
-                    }
+
+        db.collection("chats/"+collectionId+"/messsages")
+                        .get().addOnCompleteListener(t->{
+                            for (QueryDocumentSnapshot snapshot : t.getResult()){
+                                db.collection("chats/"+collectionId+"/messsages").document(snapshot.getId()).delete();
+                            }
+
+                    db.collection("chats").document(collectionId)
+                            .delete()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    itemList.remove(position);
+                                    itemId.remove(position);
+                                    itemAdapter.notifyItemRemoved(position);
+                                    deleteFromStorage(collectionId);
+                                    Log.d("Firestore", "DocumentSnapshot successfully deleted!");
+                                } else {
+                                    Log.w("Firestore", "Error deleting document", task.getException());
+                                }
+                            });
+
+                }).addOnFailureListener(f->{
+                    Log.d("F", String.valueOf(f));
                 });
+
+
+
+
+
     }
 
     private void deleteFromStorage(String collectionId) {
