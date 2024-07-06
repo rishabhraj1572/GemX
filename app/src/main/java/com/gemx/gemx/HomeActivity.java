@@ -1,15 +1,15 @@
 package com.gemx.gemx;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.util.TypedValue;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,17 +17,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gemx.gemx.Adapters.ChatHistoryItemAdapter;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -61,13 +59,51 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         setupRecyclerView();
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        getUserName(userId);
+
 
         ImageView menu = findViewById(R.id.menu);
         menu.setOnClickListener(v-> showLogoutDialog());
 
         // Fetch history data
         retrieveHistory();
+
+    }
+
+    private void getUserName(String userId) {
+        db.collection("users").document(userId).get().addOnCompleteListener(task->{
+            String name = task.getResult().getString("name");
+            try{
+                String[] words = name.trim().split("\\s+");
+                String firstWord = words[0];
+                TextView userName = findViewById(R.id.user_name);
+                applyGradientToTextView(userName);
+                userName.setText(firstWord);
+            }catch (Exception e){
+                TextView userName = findViewById(R.id.user_name);
+                applyGradientToTextView(userName);
+                userName.setText(name);
+            }
+        });
+    }
+
+    private void applyGradientToTextView(TextView textView) {
+        Shader textShader = new LinearGradient(0, 0, textView.getWidth(), textView.getHeight(),
+                new int[]{
+                        0xFFFFFFFF, // #FFFFFF
+                        0xFF8580C4, // #8580C4
+                        0xFF5951BC, // #5951BC
+                        0xFF4840A6, // #4840A6
+                        0xFF6D67B8  // #6D67B8
+                },
+                new float[]{
+                        0, 0.09f, 0.40f, 0.56f, 0.64f
+                }, Shader.TileMode.CLAMP);
+
+        textView.getPaint().setShader(textShader);
     }
 
     private void showLogoutDialog() {
@@ -113,12 +149,12 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     }
 
     private void initializeUI() {
-        ConstraintLayout chatWithGemx = findViewById(R.id.chatwithGemx);
-        ImageView talkWithGemx = findViewById(R.id.talkWithGemX);
-
+        CardView chatWithGemx = findViewById(R.id.chatwithGemx);
+        CardView talkWithGemx = findViewById(R.id.talkWithGemX);
         chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
         talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
     }
+
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
@@ -136,7 +172,6 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
             isFetchingData = true;
             itemList.clear();
             itemId.clear();
-            db = FirebaseFirestore.getInstance();
             db.collection("chats")
                     .get()
                     .addOnCompleteListener(task -> {
