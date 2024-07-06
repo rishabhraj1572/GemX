@@ -52,38 +52,58 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <ImageView
-            android:id="@+id/back"
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="10dp"
-            android:layout_marginStart="1dp"
-            android:layout_gravity="start"
-            app:srcCompat="@drawable/back"
-            app:tint="@color/white" />
+            android:layout_gravity="start">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/back"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
             android:layout_gravity="center"
-            android:paddingTop="3.5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
             android:text="Chatting with GemX"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_weight="1"/>
+            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="36dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="36dp"
-            android:src="@drawable/myprofile"
-            android:layout_weight="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/share_btn"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:src="@drawable/share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

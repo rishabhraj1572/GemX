@@ -174,6 +174,22 @@ public class ChattingActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> finish());
 
 
+        //sharing
+        ImageView shareBtn = findViewById(R.id.share_btn);
+        shareBtn.setOnClickListener(v->{
+            if(sender.isEmpty() && receiver.isEmpty()){
+                Toast.makeText(this, "Nothing to Share", Toast.LENGTH_SHORT).show();
+            }else{
+                if(chatId!=null){
+                    epch = chatId.split("_")[1];
+                    shareLink(epch);
+                }else {
+                    shareLink(String.valueOf(epochTime));
+                }
+            }
+        });
+
+
         //all suggestion
         suggestion1.setOnClickListener(v->{
             String s = suggestion1.getText().toString().replace("●   ", "");
@@ -197,6 +213,17 @@ public class ChattingActivity extends AppCompatActivity {
         });
     }
 
+
+    private void shareLink(String id) {
+        String userUID = user.getUid();
+
+        String urlToShare = "https://gemxapp.000webhostapp.com/chat.php?id="+userUID + "_" + id;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);
+
+        startActivity(Intent.createChooser(shareIntent, "Share Via"));
+    }
 
     private void retrieveHistory(String historyId) {
 

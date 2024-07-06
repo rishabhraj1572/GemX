@@ -22,6 +22,25 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.GemX"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ViewShareChat"
+            android:exported="true"
+            android:launchMode="standard">
+
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="gemxapp.000webhostapp.com"
+                    android:pathPattern="/chat.php" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".EmailVerified"
             android:exported="false"/>

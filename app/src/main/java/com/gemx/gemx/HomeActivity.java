@@ -129,12 +129,9 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
             //logout Intent
             mAuth.signOut();
-            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        FirebaseAuth.getInstance().signOut(); // very important if you are using firebase.
-                    }
+            mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    FirebaseAuth.getInstance().signOut(); 
                 }
             });
 
