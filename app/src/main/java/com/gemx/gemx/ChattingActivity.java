@@ -2,6 +2,7 @@ package com.gemx.gemx;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,13 +10,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -37,6 +42,9 @@ import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -213,7 +221,6 @@ public class ChattingActivity extends AppCompatActivity {
         });
     }
 
-
     private void shareLink(String id) {
         String userUID = user.getUid();
 
@@ -277,6 +284,10 @@ public class ChattingActivity extends AppCompatActivity {
             // Display
             chatsView.setVisibility(View.VISIBLE);
             chatsView.scrollToPosition(receiver.size() - 1);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                itemAdapter.updateLastItemPosition(receiver.size() - 1);
+            }, 500);
         }
     }
 
@@ -457,6 +468,7 @@ public class ChattingActivity extends AppCompatActivity {
 //        imageUrlList.add("na");
         chatsView.smoothScrollToPosition(receiver.size() - 1);
         itemAdapter.notifyDataSetChanged();
+        itemAdapter.updateLastItemPosition(receiver.size() - 1);
 
         StringBuilder outputContent = new StringBuilder();
         StringBuilder msgBuilder = new StringBuilder();
@@ -658,6 +670,7 @@ public class ChattingActivity extends AppCompatActivity {
 //        imageUrlList.add("na");
         chatsView.smoothScrollToPosition(receiver.size() - 1);
         itemAdapter.notifyDataSetChanged();
+        itemAdapter.updateLastItemPosition(receiver.size() - 1);
 
         StringBuilder outputContent = new StringBuilder();
         StringBuilder msgBuilder = new StringBuilder();

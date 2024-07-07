@@ -74,17 +74,15 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     }
 
     private void getUserName(String userId) {
+        TextView userName = findViewById(R.id.user_name);
+        applyGradientToTextView(userName);
         db.collection("users").document(userId).get().addOnCompleteListener(task->{
             String name = task.getResult().getString("name");
             try{
                 String[] words = name.trim().split("\\s+");
                 String firstWord = words[0];
-                TextView userName = findViewById(R.id.user_name);
-                applyGradientToTextView(userName);
                 userName.setText(firstWord);
             }catch (Exception e){
-                TextView userName = findViewById(R.id.user_name);
-                applyGradientToTextView(userName);
                 userName.setText(name);
             }
         });
@@ -270,7 +268,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                                 if (task.isSuccessful()) {
                                     itemList.remove(position);
                                     itemId.remove(position);
-                                    itemAdapter.notifyItemRemoved(position);
+                                    retrieveHistory();
                                     deleteFromStorage(collectionId);
                                     Log.d("Firestore", "DocumentSnapshot successfully deleted!");
                                 } else {

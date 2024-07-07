@@ -56,4 +56,5 @@ dependencies {
     implementation("org.reactivestreams:reactive-streams:1.0.4")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.github.chrisbanes:PhotoView:2.3.0")
 }

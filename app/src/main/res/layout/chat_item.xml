@@ -43,17 +43,17 @@
 
             <ImageView
                 android:id="@+id/chatImage"
-                android:layout_width="wrap_content"
-                android:minWidth="200dp"
-                android:layout_height="200dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:layout_margin="15dp"
                 android:background="@drawable/rounded_corners"
                 android:clipToOutline="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                android:scaleType="centerCrop"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -68,19 +68,46 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutu">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutu"
+        android:background="@drawable/chat_receive_bg">
 
         <TextView
             android:id="@+id/receiver"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/chat_receive_bg"
-            android:padding="10dp"
-            android:text="Hello How are YouHello How are YouHello How are You"
+            android:layout_margin="15dp"
+            android:text="Hello How are YouHello Hello How are YouHello Hello How are YouHello How are YouHello How are You"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/copy"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiver"
+            app:srcCompat="@drawable/copy" />
+
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/copy"
+            app:layout_constraintTop_toBottomOf="@+id/receiver"
+            app:srcCompat="@drawable/refresh"
+            app:tint="@color/white"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
