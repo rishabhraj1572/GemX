@@ -74,8 +74,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
         if(imageUrlItem.equals("na")){
             //do nothing
             holder.chatImage.setVisibility(View.GONE);
+            holder.refreshBtn.setVisibility(View.VISIBLE);
         }else{
             holder.chatImage.setVisibility(View.VISIBLE);
+            holder.refreshBtn.setVisibility(View.GONE);
             Glide.with(context).load(imageUrlItem)
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(18)))
                     .into(holder.chatImage);
@@ -87,7 +89,11 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
         }else{
             if(lastItemPosition !=-1){
                 if (position == lastItemPosition) {
-                    holder.refreshBtn.setVisibility(View.VISIBLE);
+                    if(imageUrlItem.equals("na")){
+                        holder.refreshBtn.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.refreshBtn.setVisibility(View.GONE);
+                    }
                     //do refresh
                 }else {
                     holder.refreshBtn.setVisibility(View.GONE);
