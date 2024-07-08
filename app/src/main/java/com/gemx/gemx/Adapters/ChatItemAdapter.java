@@ -1,15 +1,12 @@
 package com.gemx.gemx.Adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.gemx.gemx.ChattingActivity;
 import com.gemx.gemx.R;
 import com.gemx.gemx.ViewShareChat;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,6 +30,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
     private List<String> imageUrlList;
     private Context context;
     private int lastItemPosition=-1;
+    private ChatItemAdapter.OnItemClickListener mListener;
 
 
     public ChatItemAdapter(Context context,List<String> senderList,List<String> receiverList, List<String> imageUrlList) {
@@ -43,6 +39,15 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
         this.receiverList = receiverList;
         this.imageUrlList = imageUrlList;
     }
+
+    public interface OnItemClickListener {
+        void onRefresh(int position);
+    }
+
+    public void setOnItemClickListener(ChatItemAdapter.OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -56,9 +61,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
         String sendItem = senderList.get(position);
         holder.sender.setText(sendItem);
         String receiveItemi = receiverList.get(position);
-        String receiveItem = receiveItemi.substring(0, receiveItemi.length() - 1);
-
-        holder.receiver.setText(receiveItem);
+        try{
+            String receiveItem = receiveItemi.substring(0, receiveItemi.length() - 1);
+            holder.receiver.setText(receiveItem);
+            holder.copyBtn.setOnClickListener(v->setClipboard(context,receiveItem));
+        }catch (Exception ignore){
+            holder.receiver.setText(receiveItemi);
+            holder.copyBtn.setOnClickListener(v->setClipboard(context,receiveItemi));
+        }
 
         String imageUrlItem = imageUrlList.get(position);
         if(imageUrlItem.equals("na")){
@@ -72,8 +82,6 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
             holder.chatImage.setOnClickListener(v->showPicDialog(imageUrlItem));
         }
 
-        holder.copyBtn.setOnClickListener(v->setClipboard(context,receiveItem));
-
         if (context instanceof ViewShareChat) {
             holder.refreshBtn.setVisibility(View.GONE);
         }else{
@@ -86,6 +94,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
                 }
             }
         }
+
+        holder.refreshBtn.setOnClickListener(view -> {
+            if (mListener != null) {
+                if (position != RecyclerView.NO_POSITION) {
+                    mListener.onRefresh(position);
+                }
+            }
+        });
     }
 
     public void updateLastItemPosition(int position) {

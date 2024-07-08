@@ -2,7 +2,6 @@ package com.gemx.gemx;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -42,9 +39,6 @@ import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -70,7 +64,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ChattingActivity extends AppCompatActivity {
+public class ChattingActivity extends AppCompatActivity implements ChatItemAdapter.OnItemClickListener {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_CODE = 100;
@@ -98,6 +92,8 @@ public class ChattingActivity extends AppCompatActivity {
     Uri imageUri = null;
     ImageView previewImg;
     FrameLayout frameLayout;
+    String chatId;
+    private long epochTime1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,12 +151,13 @@ public class ChattingActivity extends AppCompatActivity {
         receiver = new ArrayList<>();
         imageUrlList = new ArrayList<>();
         itemAdapter = new ChatItemAdapter(ChattingActivity.this,sender, receiver,imageUrlList);
+        itemAdapter.setOnItemClickListener(this);
         chatsView.setAdapter(itemAdapter);
 
         ids = new ArrayList<>();
         //getting data from HomeActivity for fetching history
         Intent intent = getIntent();
-        String chatId = intent.getStringExtra("historyItemId");
+        chatId = intent.getStringExtra("historyItemId");
         if(chatId!=null){
             Log.d("History Chat id",chatId);
             epch = chatId.split("_")[1];
@@ -173,9 +170,11 @@ public class ChattingActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(v -> {
             String message = messageEdit.getText().toString().trim();
             if(chatId!=null){
-                sendMessageToGeminiExistingChat(message);
+                epochTime1 = System.currentTimeMillis();
+                sendMessageToGeminiExistingChat(message,epochTime1);
             }else {
-                sendMessageToGemini(message);
+                epochTime1 = System.currentTimeMillis();
+                sendMessageToGemini(message,epochTime1);
             }
         });
 
@@ -202,24 +201,29 @@ public class ChattingActivity extends AppCompatActivity {
         suggestion1.setOnClickListener(v->{
             String s = suggestion1.getText().toString().replace("●   ", "");
             imageUri =null;
-            sendMessageToGemini(s);
+            epochTime1 = System.currentTimeMillis();
+            sendMessageToGemini(s,epochTime1);
         });
         suggestion2.setOnClickListener(v->{
             String s = suggestion2.getText().toString().replace("●   ","");
             imageUri =null;
-            sendMessageToGemini(s);
+            epochTime1 = System.currentTimeMillis();
+            sendMessageToGemini(s,epochTime1);
         });
         suggestion3.setOnClickListener(v->{
             String s = suggestion3.getText().toString().replace("●   ","");
             imageUri =null;
-            sendMessageToGemini(s);
+            epochTime1 = System.currentTimeMillis();
+            sendMessageToGemini(s,epochTime1);
         });
         suggestion4.setOnClickListener(v->{
             String s = suggestion4.getText().toString().replace("●   ","");
             imageUri =null;
-            sendMessageToGemini(s);
+            epochTime1 = System.currentTimeMillis();
+            sendMessageToGemini(s,epochTime1);
         });
     }
+
 
     private void shareLink(String id) {
         String userUID = user.getUid();
@@ -261,6 +265,10 @@ public class ChattingActivity extends AppCompatActivity {
                             }
                             // Sort IDs in ascending order
                             Collections.sort(ids);
+                            if(epochTime1 == 0){
+                                epochTime1 = ids.get(ids.size() - 1);
+                                System.out.println(epochTime1);
+                            }
                             // Start loading messages
                             loadMessagesRecursively(historyId, 0);
                         } else {
@@ -433,7 +441,7 @@ public class ChattingActivity extends AppCompatActivity {
         Texthello.setVisibility(View.GONE);
         Textanything.setVisibility(View.GONE);
     }
-    private void sendMessageToGemini(String message) {
+    private void sendMessageToGemini(String message, long epochTime1) {
         if (message.isEmpty()) {
             return;
         }
@@ -468,7 +476,6 @@ public class ChattingActivity extends AppCompatActivity {
 //        imageUrlList.add("na");
         chatsView.smoothScrollToPosition(receiver.size() - 1);
         itemAdapter.notifyDataSetChanged();
-        itemAdapter.updateLastItemPosition(receiver.size() - 1);
 
         StringBuilder outputContent = new StringBuilder();
         StringBuilder msgBuilder = new StringBuilder();
@@ -489,6 +496,7 @@ public class ChattingActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     receiver.set(receiver.size() - 1, currentMessage);
                     itemAdapter.notifyDataSetChanged();
+                    itemAdapter.updateLastItemPosition(receiver.size() - 1);
                     chatsView.scrollToPosition(receiver.size() - 1); // Scroll to the bottom
                 });
 
@@ -528,7 +536,6 @@ public class ChattingActivity extends AppCompatActivity {
                     Map<String, Object> messageData = new HashMap<>();
                     messageData.put("message_sent", message);
                     messageData.put("message_received", resultText1);
-                    long epochTime1 = System.currentTimeMillis();
 
                     if(imageUri != null){
                         if (user != null) {
@@ -635,7 +642,7 @@ public class ChattingActivity extends AppCompatActivity {
         Textanything.setVisibility(View.GONE);
     }
 
-    private void sendMessageToGeminiExistingChat(String message) {
+    private void sendMessageToGeminiExistingChat(String message, long epochTime1) {
         if (message.isEmpty()) {
             return;
         }
@@ -670,7 +677,7 @@ public class ChattingActivity extends AppCompatActivity {
 //        imageUrlList.add("na");
         chatsView.smoothScrollToPosition(receiver.size() - 1);
         itemAdapter.notifyDataSetChanged();
-        itemAdapter.updateLastItemPosition(receiver.size() - 1);
+
 
         StringBuilder outputContent = new StringBuilder();
         StringBuilder msgBuilder = new StringBuilder();
@@ -692,6 +699,7 @@ public class ChattingActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     receiver.set(receiver.size() - 1, currentMessage);
                     itemAdapter.notifyDataSetChanged();
+                    itemAdapter.updateLastItemPosition(receiver.size() - 1);
                     chatsView.scrollToPosition(receiver.size() - 1); // Scroll to the bottom
                 });
 
@@ -729,7 +737,6 @@ public class ChattingActivity extends AppCompatActivity {
                     Map<String, Object> messageData = new HashMap<>();
                     messageData.put("message_sent", message);
                     messageData.put("message_received",resultText1);
-                    long epochTime1 = System.currentTimeMillis();
 
                     if(imageUri != null){
                         if (user != null) {
@@ -910,5 +917,30 @@ public class ChattingActivity extends AppCompatActivity {
 
     }
 
-}
+    @Override
+    public void onRefresh(int position) {
+        refreshResponse(position);
+    }
 
+    private void refreshResponse(int position) {
+        String message = sender.get(position);
+        if(chatId!=null){
+            int Last = sender.size() - 1;
+            history.remove(Last);
+            sender.remove(Last);
+            imageUrlList.remove(Last);
+            receiver.remove(Last);
+            sendMessageToGeminiExistingChat(message,epochTime1);
+
+        }else {
+            int Last = sender.size() - 1;
+            history.remove(Last);
+            sender.remove(Last);
+            imageUrlList.remove(Last);
+            receiver.remove(Last);
+            sendMessageToGemini(message,epochTime1);
+        }
+    }
+
+
+}
