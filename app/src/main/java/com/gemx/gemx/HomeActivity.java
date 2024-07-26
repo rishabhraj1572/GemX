@@ -12,6 +12,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -146,8 +147,10 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     private void initializeUI() {
         CardView chatWithGemx = findViewById(R.id.chatwithGemx);
         CardView talkWithGemx = findViewById(R.id.talkWithGemX);
+        LinearLayout videoCall = findViewById(R.id.videoCall);
         chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
         talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
+        videoCall.setOnClickListener(v->startActivity(new Intent(HomeActivity.this,VideoActivity.class)));
     }
 
 
