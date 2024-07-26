@@ -140,7 +140,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
             mCamera.enableShutterSound(false);
             Camera.Parameters params = mCamera.getParameters();
             // Set picture size to a reasonable resolution (e.g., 1024x768)
-            params.setPictureSize(1024, 768);
+//            params.setPictureSize(1024, 768);
             // Set JPEG quality to a value that balances quality and size (e.g., 85)
             params.setJpegQuality(60);
             mCamera.setParameters(params);
