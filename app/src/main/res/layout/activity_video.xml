@@ -22,6 +22,20 @@
             android:layout_weight="1"
             android:layout_gravity="start">
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:maxLines="1"
+                android:layout_marginStart="5dp"
+                android:text="Talking with GemX"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <ImageView
                 android:id="@+id/back"
                 android:layout_width="20dp"
@@ -36,57 +50,48 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="5"
-            android:gravity="start|center"
-            android:maxLines="1"
-            android:layout_marginStart="5dp"
-            android:text="Talking with GemX"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="4">
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/myprofile"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/menu"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:gravity="left"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/menu"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViewBeforeSpeak"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:layout_margin="25dp"
+        app:lottie_rawRes="@raw/anim3" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViewAfterSpeak"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:layout_margin="25dp"
+        app:lottie_rawRes="@raw/anim2" />
+
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="180dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="60dp"
         app:cardBackgroundColor="#000000"
         app:cardCornerRadius="40dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView16"
@@ -104,37 +109,10 @@
                 android:id="@+id/cameraView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animationViewBeforeSpeak"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                android:visibility="gone"
-                app:lottie_rawRes="@raw/anim3" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animationViewAfterSpeak"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                android:visibility="gone"
-                app:lottie_rawRes="@raw/anim2" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -157,8 +135,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginStart="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-        app:layout_constraintEnd_toEndOf="@+id/imageView16"
         app:layout_constraintStart_toStartOf="@+id/imageView16"
         app:layout_constraintTop_toTopOf="@+id/imageView16"
         app:srcCompat="@drawable/disconnect" />
@@ -167,6 +145,7 @@
         android:id="@+id/btnToggleCamera"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
         app:layout_constraintEnd_toStartOf="@+id/disconnect"
         app:layout_constraintStart_toStartOf="@+id/imageView16"
@@ -177,8 +156,8 @@
         android:id="@+id/btnSwitchCamera"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-        app:layout_constraintStart_toEndOf="@+id/disconnect"
         app:layout_constraintEnd_toEndOf="@+id/imageView16"
         app:layout_constraintTop_toTopOf="@+id/imageView16"
         app:srcCompat="@drawable/switch_camera" />

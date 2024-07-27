@@ -52,7 +52,7 @@
             android:maxLines="1"
             android:text="Profile"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

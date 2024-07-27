@@ -50,6 +50,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private boolean isFetchingData = false;
+    String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
-        String userId = user.getUid();
+        userId = user.getUid();
         getUserName(userId);
 
 
@@ -76,7 +77,6 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
     private void getUserName(String userId) {
         TextView userName = findViewById(R.id.user_name);
-        applyGradientToTextView(userName);
         db.collection("users").document(userId).get().addOnCompleteListener(task->{
             String name = task.getResult().getString("name");
             try{
@@ -87,22 +87,6 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                 userName.setText(name);
             }
         });
-    }
-
-    private void applyGradientToTextView(TextView textView) {
-        Shader textShader = new LinearGradient(0, 0, textView.getWidth(), textView.getHeight(),
-                new int[]{
-                        0xFFFFFFFF, // #FFFFFF
-                        0xFF8580C4, // #8580C4
-                        0xFF5951BC, // #5951BC
-                        0xFF4840A6, // #4840A6
-                        0xFF6D67B8  // #6D67B8
-                },
-                new float[]{
-                        0, 0.09f, 0.40f, 0.56f, 0.64f
-                }, Shader.TileMode.CLAMP);
-
-        textView.getPaint().setShader(textShader);
     }
 
     private void showLogoutDialog() {
@@ -245,6 +229,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     protected void onResume() {
         super.onResume();
             retrieveHistory();
+            getUserName(userId);
     }
 
 

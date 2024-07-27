@@ -51,397 +51,413 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hi"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text=""
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:text=","
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="30dp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/hi"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="2dp"
-        android:text="I can give answer to your Question \nJust Ask!"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout3" />
-
-    <LinearLayout
-        android:id="@+id/linearll"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="25dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hi">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/chatwithGemx"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="8dp"
-            android:elevation="4dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#36000000"
-            app:cardCornerRadius="39dp">
+            android:layout_height="wrap_content">
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:text="Chat with GemX"
-                    android:gravity="left|center"
-                    android:paddingStart="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hi"
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
-                    android:paddingTop="8dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/chat_icon_new">
-
-                </ImageView>
-
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/talkWithGemX"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="8dp"
-            android:elevation="4dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#36000000"
-            app:cardCornerRadius="39dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:text="Talk with GemX"
-                    android:gravity="left|center"
-                    android:paddingStart="20dp"
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text=""
+                    android:textColor="#6f68ac"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text=","
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
-                    android:paddingTop="8.5dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/mic_icon_new">
-
-                </ImageView>
-
-
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
             </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/discoverTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:text="Discover with GemX"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearll" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="25dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discoverTextView">
-
-        <LinearLayout
-            android:id="@+id/videoCall"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="18dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="22dp"
-                android:paddingBottom="15dp"
-                android:paddingStart="7dp"
-                android:background="@drawable/bg_gradient"
-                android:layout_gravity="center"
-                android:src="@drawable/videocall" />
-
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:gravity="center">
 
             <TextView
+                android:id="@+id/hi"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Video Connect"
-                android:gravity="center"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textSize="14sp"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="start|center"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
-                android:src="@drawable/i" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                app:cardBackgroundColor="@color/bottom"
-                app:cardCornerRadius="18dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="22dp"
-                    android:paddingBottom="15dp"
-                    android:paddingStart="4dp"
-                    android:background="@drawable/bg_gradient"
-                    android:layout_gravity="center"
-                    android:src="@drawable/googletranslator" />
-
-
-            </androidx.cardview.widget.CardView>
+                android:layout_marginStart="28dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="2dp"
+                android:text="I can give answer to your Question \nJust Ask!"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout3" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/linearll"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hi">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/chatwithGemx"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#36000000"
+                    app:cardCornerRadius="39dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:text="Chat with GemX"
+                            android:gravity="left|center"
+                            android:paddingStart="20dp"
+                            android:textColor="@color/white"
+                            android:textSize="20dp" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:paddingTop="8dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/chat_icon_new">
+
+                        </ImageView>
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/talkWithGemX"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#36000000"
+                    app:cardCornerRadius="39dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:text="Talk with GemX"
+                            android:gravity="left|center"
+                            android:paddingStart="20dp"
+                            android:textColor="@color/white"
+                            android:textSize="20dp" />
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:paddingTop="8.5dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/mic_icon_new">
+
+                        </ImageView>
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/discoverTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:text="Discover with GemX"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearll" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal"
-                android:gravity="center">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/discoverTextView">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/videoCall"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textSize="14sp"
-                    android:text="Smart Translator"
-                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    android:textColor="@color/white" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="18dp">
 
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="start|center"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:src="@drawable/i" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="22dp"
+                            android:paddingBottom="15dp"
+                            android:paddingStart="7dp"
+                            android:background="@drawable/bg_gradient"
+                            android:layout_gravity="center"
+                            android:src="@drawable/videocall" />
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Video Connect"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textSize="14sp"
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:src="@drawable/i" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bottom"
+                        app:cardCornerRadius="18dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="22dp"
+                            android:paddingBottom="15dp"
+                            android:paddingStart="4dp"
+                            android:background="@drawable/bg_gradient"
+                            android:layout_gravity="center"
+                            android:src="@drawable/googletranslator" />
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textSize="14sp"
+                            android:text="Smart Translator"
+                            android:gravity="center"
+
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:src="@drawable/i" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bottom"
+                        app:cardCornerRadius="18dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="22.5dp"
+                            android:paddingBottom="15dp"
+                            android:paddingStart="4.5dp"
+                            android:background="@drawable/bg_gradient"
+                            android:layout_gravity="center"
+                            android:src="@drawable/travel" />
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="TravelGenie"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textSize="14sp"
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:src="@drawable/i" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
 
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                app:cardBackgroundColor="@color/bottom"
-                app:cardCornerRadius="18dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="22.5dp"
-                    android:paddingBottom="15dp"
-                    android:paddingStart="4.5dp"
-                    android:background="@drawable/bg_gradient"
-                    android:layout_gravity="center"
-                    android:src="@drawable/travel" />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/searches"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:text="Recent Searches"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="TravelGenie"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textSize="14sp"
-                    android:textColor="@color/white" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/searches" />
 
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="start|center"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:src="@drawable/i" />
-
-            </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/searches"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:text="Recent Searches"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searches" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,11 +67,17 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     GenerativeModel gm;
     private Bitmap CapImage;
     LottieAnimationView beforeResponse,afterresponse;
+    Content.Builder userMessageBuilder = new Content.Builder();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
+        userMessageBuilder.setRole("user");
+        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
+        userMessageBuilder.addText("don't use 'image shows' in your sentences");
+        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
 
         Transition transition = new Fade();
         transition.setDuration(600);
@@ -242,7 +248,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     private void switchCamera() {
         if (mCamera != null) {
             mCamera.stopPreview();
-            mCamera.release();
+//            mCamera.release();
             mCamera = null;
         }
 
@@ -263,7 +269,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     private void toggleCamera() {
         if (mCamera != null) {
             mCamera.stopPreview();
-            mCamera.release();
+//            mCamera.release();
             mCamera = null;
             preview.removeAllViews();
         } else {
@@ -294,7 +300,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mCamera.release();
+//        mCamera.release();
         speechRecognizer.destroy();
         textToSpeech.stop();
         restoreVol();
@@ -334,7 +340,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
             //show animation (after)
             runOnUiThread(()->{
-                preview.setVisibility(View.GONE);
+//                preview.setVisibility(View.GONE);
                 beforeResponse.setVisibility(View.GONE);
                 afterresponse.setVisibility(View.VISIBLE);
             });
@@ -348,9 +354,10 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
             //hide animation
 
             runOnUiThread(()->{
-                preview.setVisibility(View.VISIBLE);
-                beforeResponse.setVisibility(View.GONE);
+//                preview.setVisibility(View.VISIBLE);
+//                beforeResponse.setVisibility(View.GONE);
                 afterresponse.setVisibility(View.GONE);
+                beforeResponse.setVisibility(View.VISIBLE);
             });
 
             startListening();
@@ -391,7 +398,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
             //show animation (before)
             runOnUiThread(()->{
-                preview.setVisibility(View.GONE);
+//                preview.setVisibility(View.GONE);
                 beforeResponse.setVisibility(View.VISIBLE);
                 afterresponse.setVisibility(View.GONE);
             });
@@ -454,16 +461,18 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "UniqueUtteranceId");
     }
 
+
     private void sendMessageToGemini(String message) {
 
         if (message.isEmpty()) {
             return;
         }
 
-        Content.Builder userMessageBuilder = new Content.Builder();
-        userMessageBuilder.setRole("user");
-        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
-        userMessageBuilder.addText("don't use 'image shows' in your sentences");
+//        Content.Builder userMessageBuilder = new Content.Builder();
+//        userMessageBuilder.setRole("user");
+//        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
+//        userMessageBuilder.addText("don't use 'image shows' in your sentences");
+//        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
         userMessageBuilder.addText(message);
         userMessageBuilder.addImage(CapImage);
         CapImage = null;
