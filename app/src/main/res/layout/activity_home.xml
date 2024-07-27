@@ -18,19 +18,20 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/profile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:padding="10dp"
-            app:srcCompat="@drawable/myprofile" />
+            android:padding="15dp"
+
+            app:srcCompat="@drawable/account" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="3"
             android:paddingTop="7dp"

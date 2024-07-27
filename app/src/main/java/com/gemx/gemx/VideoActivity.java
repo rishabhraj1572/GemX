@@ -15,7 +15,11 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,9 +27,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
 import com.google.ai.client.generativeai.type.Content;
@@ -60,12 +66,23 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     List<Content> history;
     GenerativeModel gm;
     private Bitmap CapImage;
+    LottieAnimationView beforeResponse,afterresponse;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        Transition transition = new Fade();
+        transition.setDuration(600);
+        transition.addTarget(R.id.animationViewBeforeSpeak);
+        transition.addTarget(R.id.animationViewAfterSpeak);
+
+        ConstraintLayout parent = findViewById(R.id.parent);
+        TransitionManager.beginDelayedTransition(parent, transition);
+
+        beforeResponse = findViewById(R.id.animationViewBeforeSpeak);
+        afterresponse = findViewById(R.id.animationViewAfterSpeak);
 
         // Initialize SpeechRecognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -314,12 +331,30 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
+
+            //show animation (after)
+            runOnUiThread(()->{
+                preview.setVisibility(View.GONE);
+                beforeResponse.setVisibility(View.GONE);
+                afterresponse.setVisibility(View.VISIBLE);
+            });
+
         }
 
         @Override
         public void onDone(String utteranceId) {
             System.out.println("Speech Ended");
+
+            //hide animation
+
+            runOnUiThread(()->{
+                preview.setVisibility(View.VISIBLE);
+                beforeResponse.setVisibility(View.GONE);
+                afterresponse.setVisibility(View.GONE);
+            });
+
             startListening();
+
         }
 
         @Override
@@ -353,6 +388,14 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
             //click picture here
             capturePicture();
+
+            //show animation (before)
+            runOnUiThread(()->{
+                preview.setVisibility(View.GONE);
+                beforeResponse.setVisibility(View.VISIBLE);
+                afterresponse.setVisibility(View.GONE);
+            });
+
         }
 
         @Override
@@ -372,21 +415,18 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
                 String recognizedText = matches.get(0);
                 Log.d(TAG, "Recognized text: " + recognizedText);
 //                restoreVolumeLevelsDelayed(null);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (CapImage == null) {
-                            // Wait for CapImage to be not null
-                            try {
-                                Thread.sleep(100); // Sleep for 100ms before checking again
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                new Thread(() -> {
+                    while (CapImage == null) {
+                        // Wait for CapImage to be not null
+                        try {
+                            Thread.sleep(100); // Sleep for 100ms before checking again
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-
-                        // CapImage is not null, proceed with sending the message
-                        sendMessageToGemini(recognizedText);
                     }
+
+                    // CapImage is not null, proceed with sending the message
+                    sendMessageToGemini(recognizedText);
                 }).start();
 
 
