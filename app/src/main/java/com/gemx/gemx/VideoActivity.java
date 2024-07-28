@@ -149,7 +149,6 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
             // Check if the image is already under 50 KB
             if (data.length > 50 * 1024) {
-                // Resize and compress the bitmap if it's too large
                 bitmap = resizeBitmapTo200KB(bitmap);
             }
 
@@ -162,9 +161,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         if (mCamera != null) {
             mCamera.enableShutterSound(false);
             Camera.Parameters params = mCamera.getParameters();
-            // Set picture size to a reasonable resolution (e.g., 1024x768)
 //            params.setPictureSize(1024, 768);
-            // Set JPEG quality to a value that balances quality and size (e.g., 85)
             params.setJpegQuality(60);
             mCamera.setParameters(params);
 
@@ -176,7 +173,6 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         final int MAX_SIZE = 50 * 1024; // 50 KB
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        // Initial compression quality
         int quality = 60;
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
@@ -195,6 +191,8 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         runOnUiThread(() -> {
 //            saveCurrentVolumeLevels();
 //            muteAllSounds();
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            speechRecognizer.setRecognitionListener(new VideoActivity.SpeechRecognitionListener());
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
@@ -210,8 +208,16 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     }
 
     void restoreVol(){
-        audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            }
+        }, 800);
+
     }
+
 
 
     private Boolean setupCamera() {
@@ -310,6 +316,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     @Override
     protected void onPause() {
         super.onPause();
+        speechRecognizer.destroy();
         restoreVol();
     }
 
@@ -317,6 +324,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     protected void onResume() {
         super.onResume();
         switchToCallProfile();
+        startListening();
     }
 
     @Override

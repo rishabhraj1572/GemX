@@ -22,21 +22,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
-
-        // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.
         mHolder = getHolder();
         mHolder.addCallback(this);
-        // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        // Enable touch events
         setFocusable(true);
         setFocusableInTouchMode(true);
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        // The Surface has been created, now tell the camera where to draw the preview.
         try {
             if (mCamera != null) {
                 mCamera.setPreviewDisplay(holder);
@@ -51,7 +45,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // Surface will be destroyed when we return, so stop the preview.
         if (mCamera != null) {
             mCamera.stopPreview();
         }
@@ -59,32 +52,25 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         if (mHolder.getSurface() == null) {
-            // preview surface does not exist
             return;
         }
 
-        // stop preview before making changes
         try {
             if (mCamera != null) {
                 mCamera.stopPreview();
             }
         } catch (Exception e) {
-            // ignore: tried to stop a non-existent preview
         }
 
-        // set preview size and make any resize, rotate or reformatting changes here
         if (mCamera != null) {
             Camera.Parameters parameters = mCamera.getParameters();
             Camera.Size optimalSize = getOptimal16x9PreviewSize(parameters.getSupportedPreviewSizes());
             if (optimalSize != null) {
                 parameters.setPreviewSize(optimalSize.width, optimalSize.height);
                 mCamera.setParameters(parameters);
-
-                // Adjust the SurfaceView to maintain the 16:9 aspect ratio
                 adjustSurfaceViewSize(optimalSize, w, h);
             }
 
-            // start preview with new settings
             try {
                 mCamera.setPreviewDisplay(mHolder);
                 setCameraDisplayOrientation((Activity) getContext(), Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
@@ -181,7 +167,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
                     public void onAutoFocus(boolean success, Camera camera) {
-                        // Do something after focus is achieved
                     }
                 });
             } else {

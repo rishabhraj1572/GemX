@@ -95,6 +95,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @Override
     protected void onPause() {
         super.onPause();
+        speechRecognizer.destroy();
         restoreVol();
     }
 
@@ -102,6 +103,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume() {
         super.onResume();
         switchToCallProfile();
+        startListening();
     }
 
     private void switchToCallProfile() {
@@ -111,7 +113,14 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     void restoreVol(){
-        audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            }
+        }, 800);
+
     }
 
     private boolean checkMicrophonePermission() {
@@ -124,6 +133,8 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void startListening() {
         runOnUiThread(() -> {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            speechRecognizer.setRecognitionListener(new TalkActivity.SpeechRecognitionListener());
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
