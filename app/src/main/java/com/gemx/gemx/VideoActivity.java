@@ -306,7 +306,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        mCamera.release();
+        mCamera.release();
         speechRecognizer.destroy();
         textToSpeech.stop();
         restoreVol();
@@ -317,6 +317,8 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     protected void onPause() {
         super.onPause();
         speechRecognizer.destroy();
+        mCamera.release();
+        finish();
         restoreVol();
     }
 
@@ -324,7 +326,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     protected void onResume() {
         super.onResume();
         switchToCallProfile();
-        startListening();
+//        startListening();
     }
 
     @Override

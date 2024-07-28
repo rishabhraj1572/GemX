@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ExpandableListAdapter;
 import android.widget.FrameLayout;
 
 import java.io.IOException;
@@ -46,7 +47,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         if (mCamera != null) {
-            mCamera.stopPreview();
+            try{
+                mCamera.stopPreview();
+            }catch (Exception exception){}
+
         }
     }
 
