@@ -74,10 +74,10 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        userMessageBuilder.setRole("user");
-        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
-        userMessageBuilder.addText("don't use 'image shows' in your sentences");
-        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
+//        userMessageBuilder.setRole("user");
+//        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
+//        userMessageBuilder.addText("don't use 'image shows' in your sentences");
+//        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
 
         Transition transition = new Fade();
         transition.setDuration(600);
@@ -468,11 +468,11 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
             return;
         }
 
-//        Content.Builder userMessageBuilder = new Content.Builder();
-//        userMessageBuilder.setRole("user");
-//        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
-//        userMessageBuilder.addText("don't use 'image shows' in your sentences");
-//        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
+        Content.Builder userMessageBuilder = new Content.Builder();
+        userMessageBuilder.setRole("user");
+        userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
+        userMessageBuilder.addText("don't use 'image shows' in your sentences");
+        userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
         userMessageBuilder.addText(message);
         userMessageBuilder.addImage(CapImage);
         CapImage = null;
