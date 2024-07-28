@@ -186,11 +186,14 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                             Tasks.whenAllComplete(tasks).addOnCompleteListener(allTasks -> {
                                 Collections.sort(collectionList, (o1, o2) -> Long.compare(o2.first, o1.first));
                                 runOnUiThread(() -> startProcessing(0, collectionList));
+                                circularProgress.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
                             });
                         } else {
                             Log.w("Firestore", "Error getting collections.", task.getException());
                         }
                         isFetchingData = false;
+
 
                     });
         }
@@ -202,6 +205,13 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
             fetchDocument(index, collectionId, collectionList);
         } else {
             itemAdapter.notifyDataSetChanged();
+        }
+
+        TextView no = findViewById(R.id.noSeraches);
+        if(itemList.isEmpty()){
+            no.setVisibility(View.VISIBLE);
+        }else{
+            no.setVisibility(View.GONE);
         }
     }
 
@@ -221,11 +231,10 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                         runOnUiThread(() -> itemAdapter.notifyDataSetChanged());
                     } else {
                         startProcessing(index + 1, collectionList);
-                        //progressbar
-                        circularProgress.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 });
+
+
     }
 
     @Override

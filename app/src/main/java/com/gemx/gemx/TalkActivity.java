@@ -114,12 +114,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     void restoreVol(){
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-            }
-        }, 800);
+        new Handler().postDelayed(() -> audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false), 800);
 
     }
 
