@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     private FirebaseAuth mAuth;
     private boolean isFetchingData = false;
     String userId;
+    ProgressBar circularProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,6 +136,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         CardView talkWithGemx = findViewById(R.id.talkWithGemX);
         LinearLayout videoCall = findViewById(R.id.videoCall);
         ImageView profile = findViewById(R.id.profile);
+        circularProgress = findViewById(R.id.progress);
         profile.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,ProfileActivity.class)));
         chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
         talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
@@ -187,6 +191,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                             Log.w("Firestore", "Error getting collections.", task.getException());
                         }
                         isFetchingData = false;
+
                     });
         }
     }
@@ -216,6 +221,9 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                         runOnUiThread(() -> itemAdapter.notifyDataSetChanged());
                     } else {
                         startProcessing(index + 1, collectionList);
+                        //progressbar
+                        circularProgress.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -229,6 +237,8 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
     protected void onResume() {
         super.onResume();
             retrieveHistory();
+            circularProgress.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
             getUserName(userId);
     }
 
