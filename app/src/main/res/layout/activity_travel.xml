@@ -4,132 +4,193 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background">
+    android:background="@drawable/travel_bg">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="#D9180F0F">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_gravity="start">
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="9"
-                android:gravity="center"
-                android:maxLines="1"
-                android:layout_marginStart="5dp"
-                android:text="TravelGenie"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:layout_gravity="start"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="9"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="TravelGenie"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/back"
+                    app:tint="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
 
             <ImageView
-                android:id="@+id/back"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="start"
-                android:layout_marginStart="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/back"
-                app:tint="@color/white" />
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/robot" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Plan all your travel plans in one app with GemX"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+        </LinearLayout>
 
 
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:fontFamily="@font/arial"
+            android:hint="City"
+            android:padding="15dp"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            android:background="@drawable/travel_edit_bg"/>
 
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Duration (Days)"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:maxLength="3"
+            android:textColorHint="@color/hint"
+            android:textSize="20sp"
+            android:fontFamily="@font/arial"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/travel_edit_bg"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:fontFamily="@font/arial"
-        android:hint="City"
-        android:maxLines="1"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        <EditText
+            android:id="@+id/budget"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Budget (Eg. Rs.10000)"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/white"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="9"
+            android:textColorHint="@color/hint"
+            android:textSize="20sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/travel_edit_bg"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/duration" />
 
-    <EditText
-        android:id="@+id/duration"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Duration (Days)"
-        android:inputType="number"
-        android:textColor="@color/white"
-        android:maxLines="1"
-        android:maxLength="3"
-        android:textColorHint="@color/hint"
-        android:textSize="24sp"
-        android:fontFamily="@font/arial"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
+        <EditText
+            android:id="@+id/nop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="No. Of Persons"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="3"
+            android:textColorHint="@color/hint"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/arial"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/travel_edit_bg"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budget" />
 
-    <EditText
-        android:id="@+id/budget"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Budget (Eg. Rs.10000)"
-        android:fontFamily="@font/arial"
-        android:textColor="@color/white"
-        android:inputType="number"
-        android:maxLines="1"
-        android:maxLength="9"
-        android:textColorHint="@color/hint"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@drawable/button_bg"
+            android:text="Generate Itinerary"
+            android:textSize="20sp"
+            android:fontFamily="@font/arial"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:padding="15dp"
+            android:layout_marginTop="30dp"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nop" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/nop"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="No. Of Persons"
-        android:fontFamily="@font/arial"
-        android:inputType="number"
-        android:maxLines="1"
-        android:maxLength="3"
-        android:textColorHint="@color/hint"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budget" />
-
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:background="@drawable/button_bg"
-        android:text="Submit"
-        android:fontFamily="@font/arial"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nop" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
