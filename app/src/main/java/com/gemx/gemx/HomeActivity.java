@@ -135,9 +135,13 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         CardView chatWithGemx = findViewById(R.id.chatwithGemx);
         CardView talkWithGemx = findViewById(R.id.talkWithGemX);
         LinearLayout videoCall = findViewById(R.id.videoCall);
+        LinearLayout translateBtn =  findViewById(R.id.translate);
+        LinearLayout travelBtn = findViewById(R.id.travel);
         ImageView profile = findViewById(R.id.profile);
         circularProgress = findViewById(R.id.progress);
         profile.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,ProfileActivity.class)));
+        translateBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TranslateActivity.class)));
+        travelBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TravelActivity.class)));
         chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
         talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
         videoCall.setOnClickListener(v->startActivity(new Intent(HomeActivity.this,VideoActivity.class)));

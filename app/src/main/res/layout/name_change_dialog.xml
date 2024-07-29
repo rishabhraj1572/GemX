@@ -38,6 +38,7 @@
             android:background="@drawable/name_edit"
             android:gravity="start"
             android:hint="New Username"
+            android:fontFamily="@font/arial"
             android:padding="10dp"
             android:textColor="#4D3333"
             android:textSize="16dp"
@@ -69,6 +70,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/yes_btn"
                 android:text="Cancel"
+                android:fontFamily="@font/arial"
                 android:textSize="15dp" />
 
             <Button
@@ -80,6 +82,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_bg2"
                 android:text="Save"
+                android:fontFamily="@font/arial"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
         </LinearLayout>

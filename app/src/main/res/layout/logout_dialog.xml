@@ -48,6 +48,7 @@
                 android:text="Yes"
                 android:textSize="15dp"
                 android:layout_marginEnd="10dp"
+                android:fontFamily="@font/arial"
                 android:background="@drawable/yes_btn"/>
 
             <Button
@@ -58,6 +59,7 @@
                 android:layout_gravity="center"
                 android:text="No"
                 android:textSize="15dp"
+                android:fontFamily="@font/arial"
                 android:textColor="@color/white"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/button_bg"/>

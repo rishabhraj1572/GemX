@@ -306,6 +306,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/translate"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
@@ -366,6 +367,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/travel"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
