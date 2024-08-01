@@ -1,8 +1,10 @@
 package com.gemx.gemx;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -10,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,11 +48,16 @@ public class TravelActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     List<Content> history;
     GenerativeModel gm;
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
+
+        progressDialog = new ProgressDialog(this, R.style.MyAlertDialogStyle);
+
 
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v->onBackPressed());
@@ -104,10 +112,36 @@ public class TravelActivity extends AppCompatActivity {
             String budget = budget_e.getText().toString();
             String noOfPer = no_p_e.getText().toString();
 
-            String prompt = "Make itinerary for "+city+" for "+duration+" days for "+noOfPer+" persons in around "+budget+" rupees (INR)";
+            if(TextUtils.isEmpty(city)||TextUtils.isEmpty(duration)){
+                Toast.makeText(this, "Enter details", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if(TextUtils.isEmpty(budget)){
+                String prompt = "Make itinerary for "+city+" for "+duration+" days for "+noOfPer+" persons";
+                String heading = "Itinerary for "+city+" for "+duration+" days for "+noOfPer+" persons";
+                sendMessageToGemini(prompt,heading,city);
+                return;
+            }
+
+            if(TextUtils.isEmpty(noOfPer)){
+                String prompt = "Make itinerary for "+city+" for "+duration+" days in around "+budget+" rupees (INR)";
+                String heading = "Itinerary for "+city+" for "+duration+" days in around Rs."+budget;
+                sendMessageToGemini(prompt,heading,city);
+                return;
+            }
+
+            if(TextUtils.isEmpty(noOfPer) && TextUtils.isEmpty(budget)){
+                String prompt = "Make itinerary for "+city+" for "+duration+" days";
+                String heading = "Itinerary for "+city+" for "+duration+" days";
+                sendMessageToGemini(prompt,heading,city);
+                return;
+            }
+
+            String prompt = "Make itinerary for "+city+" for "+duration+" days for "+noOfPer+" persons in around "+budget+" rupees (INR)";
+            String heading = "Itinerary for "+city+" for "+duration+" days for "+noOfPer+" persons in around Rs."+budget;
             //sending prompt to gemini
-            sendMessageToGemini(prompt);
+            sendMessageToGemini(prompt,heading,city);
 
         });
 
@@ -168,11 +202,16 @@ public class TravelActivity extends AppCompatActivity {
         return suggestions;
     }
 
-    private void sendMessageToGemini(String message) {
+    private void sendMessageToGemini(String message,String heading,String city) {
 
         if (message.isEmpty()) {
             return;
         }
+
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("Generating itinerary");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         Content.Builder userMessageBuilder = new Content.Builder();
         userMessageBuilder.setRole("user");
@@ -202,6 +241,12 @@ public class TravelActivity extends AppCompatActivity {
                     history.add(modelResponse.build());
 
                     //resultText1 is the generated content for travel and we will move to next page with this response
+                    Intent i = new Intent(TravelActivity.this,DisplayTravelDetails.class);
+                    i.putExtra("heading",heading);
+                    i.putExtra("description",resultText1);
+                    i.putExtra("city",city);
+                    startActivity(i);
+                    progressDialog.dismiss();
 
                 });
             }
@@ -209,6 +254,7 @@ public class TravelActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         }, executor);
 

@@ -12,8 +12,10 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
 
     <application
@@ -29,6 +31,9 @@
         android:theme="@style/Theme.GemX"
         tools:targetApi="31">
 
+        <activity
+            android:name=".DisplayTravelDetails"
+            android:exported="false" />
         <activity
             android:name=".TravelActivity"
             android:exported="false" />
@@ -82,7 +87,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SignupActivity"
@@ -118,7 +123,8 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
+            android:theme="@style/Base.Theme.GemX.splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

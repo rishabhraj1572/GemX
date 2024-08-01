@@ -71,11 +71,21 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
 
         ImageView menu = findViewById(R.id.menu);
-        menu.setOnClickListener(v-> showLogoutDialog());
+//        menu.setOnClickListener(v-> showLogoutDialog());
 
         // Fetch history data
         retrieveHistory();
+        checkItems();
 
+    }
+
+    private void checkItems() {
+        TextView no = findViewById(R.id.noSeraches);
+        if(itemList.isEmpty()){
+            no.setVisibility(View.VISIBLE);
+        }else{
+            no.setVisibility(View.GONE);
+        }
     }
 
     private void getUserName(String userId) {
@@ -92,41 +102,22 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         });
     }
 
-    private void showLogoutDialog() {
+    private void showInfo(String head, String desc) {
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Dialog dialog = new Dialog(HomeActivity.this);
-        dialog.setContentView(R.layout.logout_dialog);
+        dialog.setContentView(R.layout.info_i_dialog);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        Button logoutYes = dialog.findViewById(R.id.logout_yes);
-        Button logoutNo = dialog.findViewById(R.id.logout_no);
+        TextView title = dialog.findViewById(R.id.title);
+        TextView description = dialog.findViewById(R.id.description);
 
-        logoutYes.setOnClickListener(v -> {
+        title.setText(head);
+        description.setText(desc);
 
-            //logout Intent
-            mAuth.signOut();
-            mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    FirebaseAuth.getInstance().signOut(); 
-                }
-            });
-
-            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-            finishAffinity();
-
-        });
-
-        logoutNo.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
@@ -139,6 +130,13 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         LinearLayout travelBtn = findViewById(R.id.travel);
         ImageView profile = findViewById(R.id.profile);
         circularProgress = findViewById(R.id.progress);
+        ImageView i_video = findViewById(R.id.i_videoCall);
+        ImageView i_translate = findViewById(R.id.i_translate);
+        ImageView i_travel = findViewById(R.id.i_travel);
+
+        i_video.setOnClickListener(v->showInfo("Video Connect","Video Connect enables seamless real-time video call to AI"));
+        i_translate.setOnClickListener(v->showInfo("Smart Translator","Coming Soon"));
+        i_travel.setOnClickListener(v->showInfo("TravelGenie","TravelGenie effortlessly generates personalized travel itineraries for your perfect trip."));
         profile.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,ProfileActivity.class)));
         translateBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TranslateActivity.class)));
         travelBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TravelActivity.class)));
@@ -209,14 +207,10 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
             fetchDocument(index, collectionId, collectionList);
         } else {
             itemAdapter.notifyDataSetChanged();
+            System.out.println("All processed");
+            checkItems();
         }
 
-        TextView no = findViewById(R.id.noSeraches);
-        if(itemList.isEmpty()){
-            no.setVisibility(View.VISIBLE);
-        }else{
-            no.setVisibility(View.GONE);
-        }
     }
 
     private void fetchDocument(int index, String collectionId, List<Pair<Long, String>> collectionList) {
@@ -233,8 +227,10 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
 
                     if (index + 1 == collectionList.size()) {
                         runOnUiThread(() -> itemAdapter.notifyDataSetChanged());
+                        checkItems();
                     } else {
                         startProcessing(index + 1, collectionList);
+                        System.out.println(index);
                     }
                 });
 
@@ -281,6 +277,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
                                 if (task.isSuccessful()) {
                                     itemList.remove(position);
                                     itemId.remove(position);
+                                    checkItems();
                                     retrieveHistory();
                                     deleteFromStorage(collectionId);
                                     Log.d("Firestore", "DocumentSnapshot successfully deleted!");

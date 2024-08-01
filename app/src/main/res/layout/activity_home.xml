@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="10dp"
-            app:srcCompat="@drawable/menu" />
+            app:srcCompat="@drawable/splash" />
 
     </LinearLayout>
 
@@ -295,6 +295,7 @@
                             android:textColor="@color/white" />
 
                         <ImageView
+                            android:id="@+id/i_videoCall"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:layout_gravity="start|center"
@@ -356,6 +357,7 @@
                             android:textColor="@color/white" />
 
                         <ImageView
+                            android:id="@+id/i_translate"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:layout_gravity="start|center"
@@ -415,6 +417,7 @@
                             android:textColor="@color/white" />
 
                         <ImageView
+                            android:id="@+id/i_travel"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:layout_gravity="start|center"

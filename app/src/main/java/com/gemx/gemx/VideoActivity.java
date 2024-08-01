@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognitionListener;
@@ -46,8 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -67,7 +67,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     GenerativeModel gm;
     private Bitmap CapImage;
     LottieAnimationView beforeResponse,afterresponse;
-    Content.Builder userMessageBuilder = new Content.Builder();
+    private int originalVolume;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,7 +142,9 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
     }
 
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+
+
+    /*private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -155,20 +157,80 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
             CapImage = bitmap;
             mCamera.startPreview();
         }
+    };*/
+
+
+    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            new ResizeAndSaveImageTask().execute(data);
+        }
     };
+
+    private class ResizeAndSaveImageTask extends AsyncTask<byte[], Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(byte[]... params) {
+            byte[] data = params[0];
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            // Check if the image is already under 50 KB
+            if (data.length > 50 * 1024) {
+                bitmap = resizeBitmapTo200KB(bitmap);
+                System.out.println("resize started");
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            // Set the resized bitmap to the CapImage
+            CapImage = bitmap;
+
+            // Restart the camera preview on the UI thread
+            if (mCamera != null) {
+                mCamera.startPreview();
+            }
+        }
+    }
+
+
 
     private void capturePicture() {
         if (mCamera != null) {
             mCamera.enableShutterSound(false);
+
+            if (isSamsungDevice()) {
+                muteShutterSound();
+            }
+
             Camera.Parameters params = mCamera.getParameters();
 //            params.setPictureSize(1024, 768);
             params.setJpegQuality(60);
             mCamera.setParameters(params);
 
             mCamera.takePicture(null, null, mPicture);
+
+            if (isSamsungDevice()) {
+                restoreSystemVolume();
+            }
         }
     }
 
+    private boolean isSamsungDevice() {
+        return Build.MANUFACTURER.equalsIgnoreCase("samsung");
+    }
+
+    private void muteShutterSound() {
+        originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, 0);
+    }
+
+    private void restoreSystemVolume() {
+        audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, originalVolume, 0);
+    }
     private Bitmap resizeBitmapTo200KB(Bitmap bitmap) {
         final int MAX_SIZE = 50 * 1024; // 50 KB
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -177,13 +239,20 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
         while (baos.toByteArray().length > MAX_SIZE && quality > 5) {
+            if (mCamera != null) {
+                mCamera.startPreview();
+            }
             baos.reset();
             quality -= 5;
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+            if (mCamera != null) {
+                mCamera.startPreview();
+            }
         }
-
+        System.out.println("resize done");
         byte[] bitmapData = baos.toByteArray();
         return BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length);
+
     }
 
 
@@ -308,6 +377,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         super.onBackPressed();
         mCamera.release();
         speechRecognizer.destroy();
+        speechRecognizer=null;
         textToSpeech.stop();
         restoreVol();
         finish();
@@ -316,8 +386,13 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     @Override
     protected void onPause() {
         super.onPause();
-        speechRecognizer.destroy();
-        mCamera.release();
+        if(speechRecognizer!=null){
+            speechRecognizer.destroy();
+            speechRecognizer=null;
+        }
+        if(mCamera != null){
+            mCamera.release();
+        }
         finish();
         restoreVol();
     }
@@ -370,7 +445,10 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
                 beforeResponse.setVisibility(View.VISIBLE);
             });
 
-            startListening();
+            if(speechRecognizer != null){
+                startListening();
+            }
+
 
         }
 
@@ -482,6 +560,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         userMessageBuilder.setRole("user");
         userMessageBuilder.addText("Answer me in 20-30 words. And don't include anything in your sentences about this, this line.");
         userMessageBuilder.addText("don't use 'image shows' in your sentences");
+        userMessageBuilder.addText("don't mention in phrase that you you seeing an image. just normally share the information.");
         userMessageBuilder.addText("Act as I am doing video call to you as i will send images with every message");
         userMessageBuilder.addText(message);
         userMessageBuilder.addImage(CapImage);
@@ -492,6 +571,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         if (history == null) {
             history = new ArrayList<>();
         }
+
         history.add(userMessage);
         ChatFutures chat = ChatFutures.from(gm.startChat(history));
 

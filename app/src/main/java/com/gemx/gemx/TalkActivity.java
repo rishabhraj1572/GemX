@@ -95,7 +95,10 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @Override
     protected void onPause() {
         super.onPause();
-        speechRecognizer.destroy();
+        if(speechRecognizer!=null){
+            speechRecognizer.destroy();
+            speechRecognizer=null;
+        }
         restoreVol();
     }
 
@@ -103,7 +106,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume() {
         super.onResume();
         switchToCallProfile();
-        startListening();
+//        startListening();
     }
 
     private void switchToCallProfile() {
@@ -155,6 +158,7 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void onBackPressed() {
         super.onBackPressed();
         speechRecognizer.destroy();
+        speechRecognizer=null;
         textToSpeech.stop();
         restoreVol();
         finish();
@@ -340,7 +344,9 @@ public class TalkActivity extends AppCompatActivity implements TextToSpeech.OnIn
         @Override
         public void onDone(String utteranceId) {
             System.out.println("Speech Ended");
-            startListening();
+            if(speechRecognizer != null){
+                startListening();
+            }
         }
 
         @Override
