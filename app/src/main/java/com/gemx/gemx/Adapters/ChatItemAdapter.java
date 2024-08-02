@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -138,6 +139,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ItemVi
     private void setClipboard(Context context, String text) {
         android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         clipboard.setText(text);
+        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
     }
 
     @Override
