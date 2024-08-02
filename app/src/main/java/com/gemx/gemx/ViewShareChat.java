@@ -89,7 +89,7 @@ public class ViewShareChat extends AppCompatActivity {
 
     private void shareLink(String id) {
 
-        String urlToShare = "https://gemxapp.000webhostapp.com/chat.php?id="+ id;
+        String urlToShare = "https://gemx.infinityfreeapp.com/chat.php?id="+ id;
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);

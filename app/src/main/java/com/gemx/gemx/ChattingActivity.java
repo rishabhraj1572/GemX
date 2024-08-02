@@ -228,7 +228,7 @@ public class ChattingActivity extends AppCompatActivity implements ChatItemAdapt
     private void shareLink(String id) {
         String userUID = user.getUid();
 
-        String urlToShare = "https://gemxapp.000webhostapp.com/chat.php?id="+userUID + "_" + id;
+        String urlToShare = "https://gemx.infinityfreeapp.com/chat.php?id="+userUID + "_" + id;
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);

@@ -63,7 +63,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="gemxapp.000webhostapp.com"
+                    android:host="gemx.infinityfreeapp.com"
                     android:pathPattern="/chat.php" />
             </intent-filter>
         </activity>
@@ -115,7 +115,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="gemxapp.000webhostapp.com"
+                    android:host="gemx.infinityfreeapp.com"
                     android:pathPattern="/gemx.php" />
             </intent-filter>
         </activity>
