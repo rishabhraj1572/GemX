@@ -8,7 +8,7 @@
     <string name="sign_in"><u>Sign In</u></string>
     <string name="create_one"><u>Create One</u></string>
     <string name="see_all"><u>See all</u></string>
-    <string name="speak_page">I am planning a trip for our anniversary in September. What are some places we can go there within a 3 hour from Delhi ?</string>
+    <string name="speak_page">Tap on Mic button to get started</string>
     <string name="default_web_client_id">5170341751-cn7fru4nvpoqcerufvob39s8l1jihloq.apps.googleusercontent.com</string>
     <string name="email_verification">Your Email ID <b><font color='white'>{email}</font></b> is not yet verified. Please verify the Email ID to proceed the next step.</string>
     <string name="verified_string">Your email has been successfully verified. Click below to log in.</string>

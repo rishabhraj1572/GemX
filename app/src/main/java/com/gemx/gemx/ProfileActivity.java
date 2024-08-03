@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -48,6 +49,15 @@ public class ProfileActivity extends AppCompatActivity {
         String userId = user.getUid();
         getUserDetails(userId);
         edit_name.setOnClickListener(v->showNameChangeDialog(userId));
+
+        CardView privacyPolicy = findViewById(R.id.privacyPolicy);
+        CardView help = findViewById(R.id.help);
+        CardView aboutUs = findViewById(R.id.aboutUs);
+
+        privacyPolicy.setOnClickListener(v->visitWebsite("https://geminiai-kz9x.onrender.com/privacypolicy"));
+        help.setOnClickListener(v->visitWebsite("https://geminiai-kz9x.onrender.com/help"));
+        aboutUs.setOnClickListener(v->visitWebsite("https://geminiai-kz9x.onrender.com/aboutus"));
+
     }
 
     private void getUserDetails(String userId) {
@@ -140,6 +150,11 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void visitWebsite(String url){
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
 
 
     @Override
