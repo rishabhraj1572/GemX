@@ -1,7 +1,10 @@
 package com.gemx.gemx;
 
+
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -16,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +51,8 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAdapter.OnItemClickListener {
 
+    private static final int MY_CAMERA_REQUEST_CODE = 1;
+    private static final int REQUEST_MICROPHONE = 2;
     private RecyclerView recyclerView;
     private ChatHistoryItemAdapter itemAdapter;
     private List<String> itemList, itemId;
@@ -141,9 +149,66 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         translateBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TranslateActivity.class)));
         travelBtn.setOnClickListener(v-> startActivity(new Intent(HomeActivity.this,TravelActivity.class)));
         chatWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ChattingActivity.class)));
-        talkWithGemx.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, TalkActivity.class)));
-        videoCall.setOnClickListener(v->startActivity(new Intent(HomeActivity.this,VideoActivity.class)));
+        talkWithGemx.setOnClickListener(v -> {
+            if(checkMicrophonePermission()){
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                } else {
+                    startActivity(new Intent(HomeActivity.this, TalkActivity.class));
+                }
+            }else {
+                requestMicrophonePermission();
+            }
+        });
+        videoCall.setOnClickListener(v->
+                {
+                    if(checkMicrophonePermission()){
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                        } else {
+                            startActivity(new Intent(HomeActivity.this,VideoActivity.class));
+                        }
+                    }else {
+                        requestMicrophonePermission();
+                    }
+                }
+                );
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                setupCamera();
+            } else {
+//                Log.e(TAG, "Camera permission denied.");
+                Toast.makeText(this, "Camera permission is required to use this feature", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == REQUEST_MICROPHONE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                }
+            } else {
+                Toast.makeText(this, "Microphone permission is required to use this feature", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean checkMicrophonePermission() {
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestMicrophonePermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_MICROPHONE);
+    }
+
 
 
     private void setupRecyclerView() {

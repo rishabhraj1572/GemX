@@ -357,7 +357,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setupCamera();
+//                setupCamera();
             } else {
                 Log.e(TAG, "Camera permission denied.");
             }
@@ -365,7 +365,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
 
         if (requestCode == REQUEST_MICROPHONE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startListening();
+//                startListening();
             } else {
                 Toast.makeText(this, "Microphone permission is required to use this feature", Toast.LENGTH_SHORT).show();
             }
