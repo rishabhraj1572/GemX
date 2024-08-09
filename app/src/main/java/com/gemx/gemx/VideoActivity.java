@@ -323,7 +323,7 @@ public class VideoActivity extends AppCompatActivity implements TextToSpeech.OnI
     private void switchCamera() {
         if (mCamera != null) {
             mCamera.stopPreview();
-//            mCamera.release();
+            mCamera.release();
             mCamera = null;
         }
 
