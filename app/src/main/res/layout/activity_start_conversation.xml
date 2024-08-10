@@ -26,35 +26,35 @@
 
 
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:layout_marginStart="10dp"
                 android:layout_gravity="start"
-                app:srcCompat="@drawable/myprofile" />
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:padding="7dp"
+
+                app:srcCompat="@drawable/splash" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="3"
+                android:paddingTop="7dp"
                 android:text="@string/app_name"
                 android:textAlignment="center"
-                android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:paddingTop="7dp"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/menu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="10dp"
                 app:srcCompat="@drawable/menu" />
+
         </LinearLayout>
 
         <ImageView
