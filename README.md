@@ -91,7 +91,7 @@ Contributions to GemX are welcome! If you'd like to contribute, please follow th
 
 ## License
 
-GemX is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
+GemX is licensed under the MIT License. See [LICENSE](LICENSE.md) for more details.
 
 ## Contact
 
