@@ -30,7 +30,7 @@ To get started with GemX, follow these steps:
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/yourusername/GemX.git
+    git clone https://github.com/Sunatqayoom/GemX.git
     ```
 
 2. **Navigate to the Project Directory:**
