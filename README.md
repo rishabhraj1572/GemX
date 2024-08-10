@@ -13,6 +13,13 @@ GemX is an innovative application designed to provide users with dynamic and int
 - **Recent Searches:** View and revisit your recent searches or prompts for quick access.
 - **User Profile:** Personalize your experience by managing your profile, including name, email, and logout options.
 
+## Download
+
+GemX is available for download on the Google Play Store. Click the icon below to get it now:
+
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=your.app.package)
+
+
 ## Screenshots
 
 | ![Splash](screenshots/1.png) | ![Login](screenshots/2.png) | ![Signup](screenshots/3.png) |
@@ -47,11 +54,6 @@ To get started with GemX, follow these steps:
 
     - Click on the `Run` button in Android Studio to build and run the app on an emulator or a physical device.
 
-## Download
-
-GemX is available for download on the Google Play Store. Click the icon below to get it now:
-
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=your.app.package)
 
 ## Contributing
 
