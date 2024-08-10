@@ -17,7 +17,7 @@ The copyright for this software is held by GemX. All rights to the software and 
 ### 3. Usage Restrictions
 
 - **No Commercial Use:** You may not use, distribute, or sell this software for commercial purposes. 
-- **No Cloning:** You may not create, distribute, or upload clones of this software to any app store or platform, including but not limited to the Google Play Store, without explicit written permission from [Your Name or Your Organization].
+- **No Cloning:** You may not create, distribute, or upload clones of this software to any app store or platform, including but not limited to the Google Play Store, without explicit written permission from GemX Team.
 - **No Derivative Works:** You may not modify, adapt, or create derivative works based on this software without explicit written permission from GemX Admin.
 
 ### 4. Attribution
@@ -32,4 +32,4 @@ This software is provided "as is," without warranty of any kind, express or impl
 
 ### 6. Contact
 
-For permission requests or questions about this license, please contact [Your Email Address].
+For permission requests or questions about this license, please contact gemxteam2024@gmail.com.
