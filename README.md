@@ -53,14 +53,6 @@ GemX is available for download on the Google Play Store. Click the icon below to
 
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=your.app.package)
 
-## Usage
-
-1. **Open GemX:** Launch the app on your Android device.
-2. **Choose Interaction Mode:** Select between text chat, voice commands, or video connect.
-3. **Enter Prompts:** Provide text or image-based prompts and get tailored responses.
-4. **Plan Trips:** Use TravelGenie to create a customized itinerary for your travels.
-5. **Manage Profile:** Access and update your profile settings.
-
 ## Contributing
 
 Contributions to GemX are welcome! If you'd like to contribute, please follow these steps:
@@ -95,4 +87,4 @@ GemX is licensed under the MIT License. See [LICENSE](LICENSE.md) for more detai
 
 ## Contact
 
-For any questions or feedback, feel free to open an issue on the GitHub repository or reach out to us at [your-email@example.com](mailto:your-email@example.com).
+For any questions or feedback, feel free to open an issue on the GitHub repository or reach out to us at [gemxteam2024@gmail.com](mailto:gemxteam2024@gmail.com).
