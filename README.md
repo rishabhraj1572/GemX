@@ -15,26 +15,13 @@ GemX is an innovative application designed to provide users with dynamic and int
 
 ## Screenshots
 
-![Splash](screenshots/1.png)
-![Login](screenshots/2.png)
-![Signup](screenshots/3.png)
-![Email (Not Verified)](screenshots/4.png)
-![Email (Verified)](screenshots/5.png)
-![OTP Verification](screenshots/7.png)
-![Intro](screenshots/6.png)
-![Home](screenshots/8.png)
-![Chat with GemX](screenshots/9.png)
-![Chat with GemX](screenshots/10.png)
-![Chat with GemX](screenshots/11.png)
-![Viewing Chat](screenshots/12.png)
-![Talk with GemX](screenshots/13.png)
-![Video Connect](screenshots/14.png)
-![TravelGenie](screenshots/15.png)
-![TravelGenie](screenshots/16.png)
-![Profile](screenshots/17.png)
-![Changing Name](screenshots/18.png)
-
-
+| ![Splash](screenshots/1.png) | ![Login](screenshots/2.png) | ![Signup](screenshots/3.png) |
+|:----------------------------:|:---------------------------:|:----------------------------:|
+| ![Email (Not Verified)](screenshots/4.png) | ![Email (Verified)](screenshots/5.png) | ![OTP Verification](screenshots/7.png) |
+| ![Intro](screenshots/6.png) | ![Home](screenshots/8.png) | ![Chat with GemX](screenshots/9.png) |
+| ![Chat with GemX](screenshots/10.png) | ![Chat with GemX](screenshots/11.png) | ![Viewing Chat](screenshots/12.png) |
+| ![Talk with GemX](screenshots/13.png) | ![Video Connect](screenshots/14.png) | ![TravelGenie](screenshots/15.png) |
+| ![TravelGenie](screenshots/16.png) | ![Profile](screenshots/17.png) | ![Changing Name](screenshots/18.png) |
 
 ## Installation
 
@@ -64,7 +51,15 @@ To get started with GemX, follow these steps:
 
 GemX is available for download on the Google Play Store. Click the icon below to get it now:
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.gemx.gemx)
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=your.app.package)
+
+## Usage
+
+1. **Open GemX:** Launch the app on your Android device.
+2. **Choose Interaction Mode:** Select between text chat, voice commands, or video connect.
+3. **Enter Prompts:** Provide text or image-based prompts and get tailored responses.
+4. **Plan Trips:** Use TravelGenie to create a customized itinerary for your travels.
+5. **Manage Profile:** Access and update your profile settings.
 
 ## Contributing
 
