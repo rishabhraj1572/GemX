@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements ChatHistoryItemAd
         getUserName(userId);
 
 
-        ImageView menu = findViewById(R.id.menu);
+//        ImageView menu = findViewById(R.id.menu);
 //        menu.setOnClickListener(v-> showLogoutDialog());
 
         // Fetch history data
