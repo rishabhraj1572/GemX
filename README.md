@@ -17,7 +17,7 @@ GemX is an innovative application designed to provide users with dynamic and int
 
 GemX is available for download on the Google Play Store. Click the icon below to get it now:
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=your.app.package)
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.gemx.gemx)
 
 
 ## Screenshots
